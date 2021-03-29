@@ -1,23 +1,37 @@
 const express = require("express");
+const md5 = require("md5");
 const router = express.Router();
 
 /* GET users listing. */
-    if (req.session.loggedin) {
-        res.redirect('/');
-    } else {
-        res.render('login', { title: 'Login' });
-    }
 router.get("/", (req, res) => {
+    if ("logout" in req.query) {
+        req.session.user = undefined;
+        res.redirect("/login");
+    } else if (req.session.user) {
+        res.redirect("/");
+	} else {
+		res.render("login", { failed: false });
+	}
 });
 
-router.post('/', async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
+router.post("/", async (req, res) => {
+	try {
+		const username = req.body.username;
+		const password = req.body.password;
 
-    req.session.loggedin = true;
-    req.session.userid = "a";
+		const db = res.locals.db;
+		const stmt = await db.prepare(
+			"select * from users where username = ? and password = ?"
+		);
+		const result = await stmt.get(username, md5(password));
 
-    res.redirect('/');
+		if (result) {
+			req.session.user = result;
+			return res.redirect("/");
+		}
+	} catch (e) {
+	} 
+    return res.render("login", { failed: true });
 });
 
 module.exports = router;
