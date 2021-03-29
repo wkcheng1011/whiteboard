@@ -33,6 +33,7 @@ app.use(
 
 // Export session data
 app.use((req, res, next) => {
+	res.locals.dbg = debug;
 	res.locals.session = req.session;
 	next();
 });
