@@ -1,5 +1,9 @@
 <title>Login</title>
 <form method="POST">
-    Password: <input name="password" type="text" />
-    <input type="submit">
-</form>	Username: <input name="username" type="text" /> <br />
+	Username: <input name="username" type="text" /> <br />
+	Password: <input name="password" type="password" />
+	<input type="submit" />
+</form>
+<% if (failed) { %>
+<h1>Login failed!</h1>
+<% } %>
