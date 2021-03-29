@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', (req, res) => {
     if (req.session.loggedin) {
         res.redirect('/');
     } else {
         res.render('login', { title: 'Login' });
     }
+router.get("/", (req, res) => {
 });
 
 router.post('/', async (req, res) => {
