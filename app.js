@@ -41,13 +41,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(async (req, res, next) => {
-    try {
-        const db = await sqlite.open("database/db.sqlite3");
-        app.locals.db = db;
-        next();
-    } catch (e) {
-        
-    }
+	try {
+		const db = await sqlite.open("database/db.sqlite3");
+		res.locals.db = db;
+		next();
+	} catch (e) {
+		console.error("Database not found! Please initialize by running database/generate_data.js")
+		process.exit(1);
+	}
 });
 
 for (const path in routes) {
