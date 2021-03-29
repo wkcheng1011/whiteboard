@@ -1,3 +1,5 @@
+const debug = true;
+
 const createError = require("http-errors");
 const express = require("express");
 const session = require("express-session");
@@ -12,6 +14,7 @@ const app = express();
 const routes = {
 	"/": "index.js",
 	"/login": "login.js",
+	"/message/": "message.js"
 };
 
 // view engine setup
