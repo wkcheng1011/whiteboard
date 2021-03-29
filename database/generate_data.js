@@ -10,7 +10,7 @@ function random(low, high) {
 }
 
 async function main() {
-	fs.unlinkSync(dbFile);
+	if (fs.existsSync(dbFile)) fs.unlinkSync(dbFile);
 
 	const db = await sqlite.open(dbFile);
 	console.log("Opened database");
@@ -23,18 +23,28 @@ async function main() {
 	}
 	console.log("Initialized database schema");
 
-	const tables = {
-		"users": 5, 
-		"classes": 3, 
-		"tasks": 5, 
-		"questions": 3, 
-		"answers": 4
+	const tableArgCount = {
+		users: 5,
+		channels: 1,
+		messages: 5,
+		participants: 2,
+		classes: 3,
+		tasks: 5,
+		questions: 3,
+		answers: 4,
+		attempts: 4,
+		attemptAnswers: 4,
 	};
 
+	// Prepare database statements
 	const stmts = {};
 
-	for (const table in tables) {
-		stmts[table] = await db.prepare(`insert into ${table} values (${Array(tables[table]).fill('?').join(',')})`);
+	for (const table in tableArgCount) {
+		stmts[table] = await db.prepare(
+			`insert into ${table} values (${Array(tableArgCount[table])
+				.fill("?")
+				.join(",")})`
+		);
 	}
 
 	// Users (10 Students, 3 Teachers)
@@ -44,25 +54,49 @@ async function main() {
 	for (let i = 1; i <= 10; i++) {
 		const _uuid = uuid();
 		students.push(_uuid);
-		await stmts.users.run(_uuid, `Student ${i}`, 0, `student${i}`, md5(`student${i}`));
-		console.log("student", { i, _uuid });
+		await stmts.users.run(
+			_uuid,
+			`Student ${i}`,
+			0,
+			`student${i}`,
+			md5(`student${i}`)
+		);
+		console.log("users", { type: "student", i, _uuid });
 	}
 	for (let i = 1; i <= 3; i++) {
 		const _uuid = uuid();
 		teachers.push(_uuid);
-		await stmts.users.run(_uuid, `Teacher ${i}`, 1, `teacher${i}`, md5(`teacher${i}`));
-		console.log("teacher", { i, _uuid });
+		await stmts.users.run(
+			_uuid,
+			`Teacher ${i}`,
+			1,
+			`teacher${i}`,
+			md5(`teacher${i}`)
+		);
+		console.log("users", { type: "teacher", i, _uuid });
 	}
 
 	// 6 Classes randomly distributed to 3 teachers
 	const classes = [];
-	
+
 	for (let i = 1; i <= 6; i++) {
 		const _uuid = uuid();
 		classes.push(_uuid);
 		const teacher = random(0, teachers.length);
 		await stmts.classes.run(_uuid, teachers[teacher], `Class ${i}`);
-		console.log("class", { i, _uuid, teacher });
+		console.log("class", { i, _uuid, teacher: teacher+1 });
+	}
+
+	// 6 Class channels
+	const channels = [];
+	for (let i = 1; i <= 6; i++) {
+		const _uuid = uuid();
+		channels.push(_uuid);
+		await stmts.channels.run(_uuid);
+		for (const student_id of students) {
+			await stmts.participants.run(_uuid, student_id);
+		}
+		console.log("channels", { i, _uuid });
 	}
 
 	// 18 Tasks randomly distributed to 6 classes
@@ -89,23 +123,22 @@ async function main() {
 		for (let j = 0; j < random(5, 10); j++) {
 			const _uuid2 = uuid();
 			questions.push(_uuid2);
-			
-			await stmts.questions.run(_uuid2, _uuid, `Question ${j}`);
 
-			const answers = [];
+			await stmts.questions.run(_uuid2, _uuid, `Sample Question`);
+			console.log("question", {j, _uuid2, _uuid});
+
 			const answersSize = random(3, 5);
 			const correct = random(0, answersSize);
 
 			for (let k = 0; k < answersSize; k++) {
 				const _uuid3 = uuid();
-				// await stmts.answers.run();
+				await stmts.answers.run(_uuid3, _uuid2, correct == k ? "Correct" : "Incorrect", correct == k);
+				console.log("answer", { k, _uuid3, _uuid2, correct: correct == k });
 			}
 			
 		}
 	}
 
-	
-	
 	console.log("Done");
 }
 

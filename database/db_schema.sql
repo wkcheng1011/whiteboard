@@ -1,19 +1,31 @@
 CREATE TABLE users (
-    id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
     name text,
     type integer,
     username string,
     password string
 );
 
+CREATE TABLE channels (
+    id string(36) NOT NULL PRIMARY KEY
+);
+
 CREATE TABLE messages (
-    id string(36),
-    from_id string(36),
-    to_id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
+    user_id string(36),
+    channel_id string(36),
     at date default (datetime('now', 'localtime')),
     content text,
-    foreign key(from_id) references users(id),
-    foreign key(to_id) references users(id)
+    foreign key(user_id) references users(id),
+    foreign key(channel_id) references channels(id)
+);
+
+CREATE TABLE participants (
+    channel_id string(36),
+    user_id string(36),
+    primary key(channel_id, user_id),
+    foreign key(channel_id) references channels(id),
+    foreign key(user_id) references users(id)
 );
 
 CREATE TABLE classes (
@@ -24,7 +36,7 @@ CREATE TABLE classes (
 );
 
 CREATE TABLE tasks (
-    id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
     class_id string(36),
     start date default (datetime('now', 'localtime')),
     end date default (datetime('now', '+14 day', 'localtime')),
@@ -33,14 +45,14 @@ CREATE TABLE tasks (
 );
 
 CREATE TABLE questions (
-    id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
     task_id string(36),
     content text,
     foreign key(task_id) references tasks(id)
 );
 
 CREATE TABLE answers (
-    id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
     question_id string(36),
     content text,
     correct boolean,
@@ -48,7 +60,7 @@ CREATE TABLE answers (
 );
 
 CREATE TABLE attempts (
-    id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
     task_id string(36),
     user_id string(36),
     at date default (datetime('now', 'localtime')),
@@ -57,7 +69,7 @@ CREATE TABLE attempts (
 );
 
 CREATE TABLE attemptAnswers (
-    id string(36),
+    id string(36) NOT NULL PRIMARY KEY,
     attempt_id string(36),
     answer_id string(36),
     question_id string(36),
