@@ -20,10 +20,9 @@ router.post("/", async (req, res) => {
 		const password = req.body.password;
 
 		const db = res.locals.db;
-		const stmt = await db.prepare(
-			"select * from users where username = ? and password = ?"
+		const result = await db.get(
+			"select * from users where username = ? and password = ?", username, md5(password)
 		);
-		const result = await stmt.get(username, md5(password));
 
 		if (result) {
 			req.session.user = result;
