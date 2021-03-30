@@ -7,6 +7,7 @@ let db = new Database("");
 
 router.get("/", async (req, res) => {
     if (!req.session.user) {
+        req.session.redirect = "/message";
         res.redirect("/login");
     } else {
         db = res.locals.db;
@@ -19,11 +20,22 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/new", async (req, res) => {
+    if (!req.session.user) {
+        req.session.redirect = "/message";
+        res.redirect("/login");
+    } else {
+        db = res.locals.db;
 
+        const stmt = await db.prepare("select * from messages where channel_id in (select id from channels where id in (select channel_id from participants where user_id = ?))");
+        const result = await stmt.all(req.session.user.id);
+
+        res.render("message", {messageCount: result.length});
+    }
 });
 
 router.get("/*", async (req, res) => {
     if (!req.session.user) {
+        req.session.redirect = "/message";
         res.redirect("/login");
     } else {
         db = res.locals.db;

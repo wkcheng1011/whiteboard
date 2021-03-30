@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
         req.session.user = undefined;
         res.redirect("/login");
     } else if (req.session.user) {
-        res.redirect("/");
+        res.redirect(req.session.redirect || "/");
 	} else {
 		res.render("login", { failed: false });
 	}
@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 
 		if (result) {
 			req.session.user = result;
-			return res.redirect("/");
+			return res.redirect(req.session.redirect || "/");
 		}
 	} catch (e) {
 	} 
