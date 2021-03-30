@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(async (req, res, next) => {
 	try {
 		const db = await sqlite.open("database/db.sqlite3");
+		await db.run("PRAGMA foreign_keys = ON");
 		res.locals.db = db;
 		next();
 	} catch (e) {
