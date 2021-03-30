@@ -1,5 +1,4 @@
 const express = require("express");
-const { Database } = require("sqlite3");
 const router = express.Router();
 
 /* GET home page. */
