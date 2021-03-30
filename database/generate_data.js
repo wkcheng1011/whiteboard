@@ -29,11 +29,10 @@ async function main() {
 		messages: 5,
 		participants: 2,
 		classes: 3,
-		tasks: 5,
 		questions: 3,
 		answers: 4,
 		attempts: 4,
-		attemptAnswers: 4,
+		attemptAnswers: 4
 	};
 
 	// Prepare database statements
@@ -46,6 +45,8 @@ async function main() {
 				.join(",")})`
 		);
 	}
+
+	stmts["tasks"] = await db.prepare(`insert into tasks (id, class_id, name) values (?, ?, ?)`);
 
 	// Users (10 Students, 3 Teachers)
 	const students = [];
@@ -112,8 +113,6 @@ async function main() {
 		await stmts.tasks.run(
 			_uuid,
 			classes[_class],
-			`datetime('now', '+${startDay} day', 'localtime')`,
-			`datetime('now', '+${startDay + duration} day', 'localtime')`,
 			`Task ${i}`
 		);
 		console.log("task", { i, _uuid, _class, startDay, duration });
