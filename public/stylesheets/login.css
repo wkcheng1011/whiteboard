@@ -1,0 +1,53 @@
+#login .container {
+	margin-top: 10%;
+	max-width: 500px;
+}
+
+#login .container .logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#login .container legend {
+	text-align: center;
+	font-size: 30px;
+}
+
+#login .container button {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 170px;
+}
+
+@media (max-width: 576px) {
+	#login .container {
+		margin-top: 30%;
+	}
+
+	#login .container .logo {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 150px;
+		height: 150px;
+	}
+
+	#login .container legend {
+		text-align: center;
+		font-size: 30px;
+	}
+
+	#login .container .mb-3 {
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+
+	#login .container button {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 170px;
+	}
+}

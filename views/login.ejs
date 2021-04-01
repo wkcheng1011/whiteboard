@@ -1,13 +1,38 @@
-<title>Login</title>
-<form method="POST">
-	Username: <input name="username" type="text" <% if (locals.dbg) { %>
-		value="student1"
-	<% } %>/> <br />
-	Password: <input name="password" type="password" <% if (locals.dbg) { %>
-		value="student1"
-	<% } %>/>
-	<input type="submit" />
-</form>
-<% if (failed) { %>
-<h1>Login failed!</h1>
-<% } %>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="stylesheets/login.css">
+        <title>Login</title>
+      </head>
+
+      <body style="background-color: #f5f5f5;">
+        <section id="login">
+            <div class="container">
+				<% if (failed) { %>
+					<h1>Login failed!</h1>
+				<% } %>					
+                <form method="POST">
+                    <img src="images/logo.png" class="logo">
+                    <legend>Login</legend>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="Student ID" <% if (locals.dbg) { %>
+							value="student1"
+						<% } %>/>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password" <% if (locals.dbg) { %>
+							value="student1"
+						<% } %>/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </form>
+            </div>
+        </section>
+      </body>
+</html>
