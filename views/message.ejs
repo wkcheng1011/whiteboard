@@ -1,1 +1,17 @@
-You have <%= messageCount %> messages. <br>
+You have <%= messages.length %> messages. <br>
+<% if (messages.length > 0) { %>
+    <table>
+        <thead>
+            <td>Author</td>
+            <td>Link</td>
+        </thead>
+        <% for (const message of messages) { %>
+            <tr>
+                <td><%= message.user_id %></td>
+                <td>
+                    <a href="<%= message.id %>"><%= message.id %></a>
+                </td>
+            </tr>
+        <% } %>
+    </table>
+<% } %>

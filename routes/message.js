@@ -13,9 +13,9 @@ router.get("/", async (req, res) => {
 	} else {
 		db = res.locals.db;
 
-		const results = await db.all("select * from messages where channel_id in (select channel_id from participants where user_id = ?) and user_id != ?", req.session.user.id, req.session.user.id);
+		const messages = await db.all("select * from messages where channel_id in (select channel_id from participants where user_id = ?) and user_id != ?", req.session.user.id, req.session.user.id);
 
-		res.render("message", { messageCount: results.length });
+		res.render("message", { messages });
 	}
 });
 
