@@ -1,0 +1,13 @@
+#navbar .bar{
+    margin-top: 5%;
+}
+
+ .user_icon{
+    float: right;
+}
+
+ .user_icon .icon{
+    border-radius: 50%;
+    height: 75px;
+    width: 75px;
+}
