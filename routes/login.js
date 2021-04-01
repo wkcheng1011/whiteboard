@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
         req.session.user = undefined;
         res.redirect("/login");
     } else if (req.session.user) {
-        res.redirect("/");
+        res.redirect(req.session.redirect || "/");
 	} else {
 		res.render("login", { failed: false });
 	}
@@ -20,14 +20,13 @@ router.post("/", async (req, res) => {
 		const password = req.body.password;
 
 		const db = res.locals.db;
-		const stmt = await db.prepare(
-			"select * from users where username = ? and password = ?"
+		const result = await db.get(
+			"select * from users where username = ? and password = ?", username, md5(password)
 		);
-		const result = await stmt.get(username, md5(password));
 
 		if (result) {
 			req.session.user = result;
-			return res.redirect("/");
+			return res.redirect(req.session.redirect || "/");
 		}
 	} catch (e) {
 	} 

@@ -1,9 +1,9 @@
 CREATE TABLE users (
     id string(36) NOT NULL PRIMARY KEY,
-    name text,
-    type integer,
-    username string,
-    password string
+    name text NOT NULL,
+    type integer NOT NULL,
+    username string NOT NULL,
+    password string NOT NULL
 );
 
 CREATE TABLE channels (
@@ -12,26 +12,27 @@ CREATE TABLE channels (
 
 CREATE TABLE messages (
     id string(36) NOT NULL PRIMARY KEY,
-    user_id string(36),
-    channel_id string(36),
+    user_id string(36) NOT NULL,
+    channel_id string(36) NOT NULL,
     at date default (datetime('now', 'localtime')),
-    content text,
+    title text NOT NULL,
+    content text NOT NULL,
     foreign key(user_id) references users(id),
     foreign key(channel_id) references channels(id)
 );
 
 CREATE TABLE participants (
-    channel_id string(36),
-    user_id string(36),
+    channel_id string(36) NOT NULL,
+    user_id string(36) NOT NULL,
     primary key(channel_id, user_id),
     foreign key(channel_id) references channels(id),
     foreign key(user_id) references users(id)
 );
 
 CREATE TABLE classes (
-    id string,
-    teacher_id string,
-    name text,
+    id string(36) NOT NULL,
+    teacher_id string(36) NOT NULL,
+    name text NOT NULL,
     foreign key(teacher_id) references users(id)
 );
 

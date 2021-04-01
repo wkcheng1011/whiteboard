@@ -1,0 +1,9 @@
+<form method="POST">
+    To: <select name="to">
+        <% for(const user of users) { %>
+        <option value="<%= user.id %>"><%= user.name %></option>
+        <% } %>
+    </select>
+    Content: <textarea name="content"></textarea>
+    <input type="submit" value="Send" />
+</form>

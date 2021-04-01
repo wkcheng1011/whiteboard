@@ -1,3 +1,5 @@
+const debug = true;
+
 const createError = require("http-errors");
 const express = require("express");
 const session = require("express-session");
@@ -12,6 +14,7 @@ const app = express();
 const routes = {
 	"/": "index.js",
 	"/login": "login.js",
+	"/message/": "message.js"
 };
 
 // view engine setup
@@ -30,6 +33,7 @@ app.use(
 
 // Export session data
 app.use((req, res, next) => {
+	res.locals.dbg = debug;
 	res.locals.session = req.session;
 	next();
 });
@@ -43,6 +47,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(async (req, res, next) => {
 	try {
 		const db = await sqlite.open("database/db.sqlite3");
+		await db.run("PRAGMA foreign_keys = ON");
 		res.locals.db = db;
 		next();
 	} catch (e) {

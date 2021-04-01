@@ -1,7 +1,11 @@
 <title>Login</title>
 <form method="POST">
-	Username: <input name="username" type="text" /> <br />
-	Password: <input name="password" type="password" />
+	Username: <input name="username" type="text" <% if (locals.dbg) { %>
+		value="student1"
+	<% } %>/> <br />
+	Password: <input name="password" type="password" <% if (locals.dbg) { %>
+		value="student1"
+	<% } %>/>
 	<input type="submit" />
 </form>
 <% if (failed) { %>
