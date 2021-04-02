@@ -26,7 +26,7 @@ async function main() {
 	const tableArgCount = {
 		users: 5,
 		channels: 1,
-		messages: 5,
+		messages: 6,
 		participants: 2,
 		classes: 3,
 		questions: 3,
@@ -46,7 +46,7 @@ async function main() {
 		);
 	}
 
-	stmts["tasks"] = await db.prepare(`insert into tasks (id, class_id, name) values (?, ?, ?)`);
+	stmts["tasks"] = await db.prepare(`insert into tasks values (?, ?, (datetime('now', ?, 'localtime')), (datetime('now', ?, 'localtime')), ?)`);
 
 	// Users (10 Students, 3 Teachers)
 	const students = [];
@@ -108,11 +108,13 @@ async function main() {
 		tasks.push(_uuid);
 		const _class = random(0, classes.length);
 		const startDay = random(1, 14);
-		const duration = random(7, 14);
+		const duration = random(1, 14);
 
 		await stmts.tasks.run(
 			_uuid,
 			classes[_class],
+			`+${startDay} day`,
+			`+${startDay + duration} day`,
 			`Task ${i}`
 		);
 		console.log("task", { i, _uuid, _class, startDay, duration });
