@@ -64,7 +64,7 @@ router.post("/new", async (req, res) => {
 
         // Add the message
         const message_id = uuid();
-        await db.run("insert into messages (id, user_id, channel_id, content) values (?, ?, ?, ?)", message_id, from_id, channel_id, req.body.content);
+        await db.run("insert into messages (id, user_id, channel_id, title, content) values (?, ?, ?, ?, ?)", message_id, from_id, channel_id, req.body.title, req.body.content);
         
 		res.redirect("/message");
 	}
@@ -82,16 +82,16 @@ router.get("/*", async (req, res) => {
 			return res.render("error", { message: "Not a valid UUID", error: id });
 		}
 
-		const result = await db.get("select users.name as f, at, content from messages, users where messages.id = ? and user_id = users.id", id);
+		const result = await db.get("select users.name as f, at, title, content from messages, users where messages.id = ? and user_id = users.id", id);
 		if (!result) {
 			return res.render("error", {
 				message: "Message does not exist",
 				error: id,
 			});
 		}
-		const { f, at, content } = result;
+		const { f, at, title, content } = result;
 
-		return res.render("messageView", { from: f, at, content });
+		return res.render("messageView", { from: f, at, title, content });
 	}
 });
 module.exports = router;

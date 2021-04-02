@@ -1,35 +1,51 @@
-<title>Welcome!</title>
-<h1><%= quote.content %></h1>
-<h2><%= quote.author %></h2>
-<h1>Welcome <%= session.user.username %> !</h1>
+<%- include('_header'); %>
 
-<a href="message/">Messages</a>
-<a href="login?logout">Logout</a>
+<body class="text-light">
+    <div class="container mt-5" style="color: var(--gray-dark);">
+        <section>
+            <div>
+                <h1><%= quote.content %></h1>
+                <h3><%= quote.author %></h3>
+            </div>
+            <div class="mt-5">
+                <h5>8 tasks will be overdue in 24 hours.</h5>
+            </div>
+        </section>
+        <section style="background: var(--light);">
+            <div class="table-responsive-sm">
+                <table data-toggle="table" data-search="true" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true" data-sorter="nameSorter">Name</th>
+                            <th data-sortable="true">From</th>
+                            <th data-sortable="true">To</th>
+                            <th data-sortable="true">Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const task of tasks) { %>
+                            <tr>
+                                <td><a href="/tasks/<%= task.task_id %>"><%= task.task_name %></a></td>
+                                <td data-original-title="<%= task.start %>" data-toggle="tooltip" data-placement="top"
+                                data-container="body">2 days ago</td>
+                                <td data-original-title="<%= task.end %>" data-toggle="tooltip" data-placement="top"
+                                    data-container="body">after 2 days</td>
+                                <td>
+                                    <a href="/tasks/<%= task.class_id %>"><%= task.class_name %></a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
 
-There are <%= tasks.length %> tasks.
-<% if (tasks.length > 0) { %>
-    <table>
-        <thead>
-            <td>Name</td>
-            <td>Start time</td>
-            <td>End time</td>
-            <td>Class</td>
-            <td>Link</td>
-        </thead>
-        <tbody>
-            <% for (const task of tasks) { %>
-                <tr>
-                    <td><%= task.task_name %></td>
-                    <td><%= task.start %></td>
-                    <td><%= task.end %></td>
-                    <td>
-                        <a href="/tasks/<%= task.class_id %>"><%= task.class_name %></a>
-                    </td>
-                    <td>
-                        <a href="/tasks/<%= task.task_id %>">Here</a>
-                    </td>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
-<% } %>
+<script>
+    function nameSorter(a, b) {
+        return a.replace(/href=.*"/, "").localeCompare(b.replace(/href=.*"/, ""));
+    }
+</script>
+
+<%- include("_footer"); %> 

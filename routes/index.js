@@ -15,7 +15,9 @@ router.get("/", async (req, res) => {
 		const quote = await (await fetch("https://api.quotable.io/random")).json();
         const tasks = await db.all("select tasks.id as task_id, tasks.name as task_name, classes.name as class_name, start, end from tasks, classes where tasks.class_id = classes.id");
         
-		res.render("index", { quote, tasks });
+		const messages = await db.all("select * from messages where channel_id in (select channel_id from participants where user_id = ?) and user_id != ?", req.session.user.id, req.session.user.id);
+		
+		res.render("index", { quote, tasks, badgeCount: messages.length });
 	}
 });
 
