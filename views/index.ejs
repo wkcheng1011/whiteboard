@@ -1,5 +1,35 @@
 <title>Welcome!</title>
+<h1><%= quote.content %></h1>
+<h2><%= quote.author %></h2>
 <h1>Welcome <%= session.user.username %> !</h1>
 
 <a href="message/">Messages</a>
 <a href="login?logout">Logout</a>
+
+There are <%= tasks.length %> tasks.
+<% if (tasks.length > 0) { %>
+    <table>
+        <thead>
+            <td>Name</td>
+            <td>Start time</td>
+            <td>End time</td>
+            <td>Class</td>
+            <td>Link</td>
+        </thead>
+        <tbody>
+            <% for (const task of tasks) { %>
+                <tr>
+                    <td><%= task.task_name %></td>
+                    <td><%= task.start %></td>
+                    <td><%= task.end %></td>
+                    <td>
+                        <a href="/tasks/<%= task.class_id %>"><%= task.class_name %></a>
+                    </td>
+                    <td>
+                        <a href="/tasks/<%= task.task_id %>">Here</a>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
