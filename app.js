@@ -14,7 +14,8 @@ const app = express();
 const routes = {
 	"/": "index.js",
 	"/login": "login.js",
-	"/message/": "message.js"
+	"/messages/": "message.js",
+	"/tasks/": "task.js"
 };
 
 // view engine setup
