@@ -21,13 +21,12 @@ async function main() {
 	for (const sql of sqls) {
 		await db.run(sql);
 	}
+
+	await db.run("PRAGMA foreign_keys = ON");
 	console.log("Initialized database schema");
 
 	const tableArgCount = {
 		users: 5,
-		channels: 1,
-		messages: 6,
-		participants: 2,
 		classes: 3,
 		questions: 3,
 		answers: 4,
@@ -45,7 +44,7 @@ async function main() {
 				.join(",")})`
 		);
 	}
-
+	stmts["messages"] = await db.prepare(`insert into messages values (?, ?, ?, ?, datetime('now', ?, 'localtime'), ?, ?)`);
 	stmts["tasks"] = await db.prepare(`insert into tasks values (?, ?, (datetime('now', ?, 'localtime')), (datetime('now', ?, 'localtime')), ?)`);
 
 	// Users (10 Students, 3 Teachers)
@@ -78,26 +77,49 @@ async function main() {
 	}
 
 	// 6 Classes randomly distributed to 3 teachers
-	const classes = [];
+	const classes = {};
 
 	for (let i = 1; i <= 6; i++) {
 		const _uuid = uuid();
-		classes.push(_uuid);
 		const teacher = random(0, teachers.length);
+
+		classes[_uuid] = teacher;
 		await stmts.classes.run(_uuid, teachers[teacher], `Class ${i}`);
 		console.log("class", { i, _uuid, teacher: teacher+1 });
 	}
 
-	// 6 Class channels
-	const channels = [];
-	for (let i = 1; i <= 6; i++) {
-		const _uuid = uuid();
-		channels.push(_uuid);
-		await stmts.channels.run(_uuid);
-		for (const student_id of students) {
-			await stmts.participants.run(_uuid, student_id);
+	// 6 Class channels and some random DM channels
+	const messages = [];
+
+	for (const _class in classes) {
+		const users = [...students, teachers[classes[_class]]];
+		for (let i = 1; i <= random(3, 10); i++) {
+			const _uuid = uuid();
+			messages.push(_uuid);
+			const from = random(0, users.length);
+			let at = random(-3600, 3600);
+			at = (at > 0 ? "+" : "") + at;
+
+			await stmts.messages.run(_uuid, users[from], _class, 1, `${at} second`, "Sample title " + i, "Sample message " + i);
+			console.log("messages", { i, _uuid, from: from, _class });
 		}
-		console.log("channels", { i, _uuid });
+	}
+
+	for (let i = 1; i <= 10; i++) {
+		const _uuid = uuid();
+		messages.push(_uuid);
+
+		let from, to;
+		do {
+			from = i < 3 ? i % 2 : random(0, students.length);
+			to = i < 3 ? 1 - (i % 2) : random(0, students.length);
+		} while (from == to);
+		
+		let at = random(-3600, 3600);
+		at = (at > 0 ? "+" : "") + at;
+
+		await stmts.messages.run(_uuid, students[from], students[to], 0, `${at} second`, "Sample title " + i, "Sample message " + i);
+		console.log("messages", { i, _uuid, from, to });
 	}
 
 	// 18 Tasks randomly distributed to 6 classes
@@ -106,13 +128,13 @@ async function main() {
 	for (let i = 1; i <= 6; i++) {
 		const _uuid = uuid();
 		tasks.push(_uuid);
-		const _class = random(0, classes.length);
+		const _class = random(0, Object.keys(classes).length);
 		const startDay = random(1, 14);
 		const duration = random(1, 14);
 
 		await stmts.tasks.run(
 			_uuid,
-			classes[_class],
+			Object.keys(classes)[_class],
 			`+${startDay} day`,
 			`+${startDay + duration} day`,
 			`Task ${i}`

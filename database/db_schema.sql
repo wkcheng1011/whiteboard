@@ -6,31 +6,19 @@ CREATE TABLE users (
     password string NOT NULL
 );
 
-CREATE TABLE channels (
-    id string(36) NOT NULL PRIMARY KEY
-);
-
 CREATE TABLE messages (
     id string(36) NOT NULL PRIMARY KEY,
-    user_id string(36) NOT NULL,
-    channel_id string(36) NOT NULL,
+    from_id string(36) NOT NULL,
+    to_id string(36) NOT NULL,
+    type integer NOT NULL,
     at date default (datetime('now', 'localtime')),
     title text NOT NULL,
     content text NOT NULL,
-    foreign key(user_id) references users(id),
-    foreign key(channel_id) references channels(id)
-);
-
-CREATE TABLE participants (
-    channel_id string(36) NOT NULL,
-    user_id string(36) NOT NULL,
-    primary key(channel_id, user_id),
-    foreign key(channel_id) references channels(id),
-    foreign key(user_id) references users(id)
+    foreign key(from_id) references users(id)
 );
 
 CREATE TABLE classes (
-    id string(36) NOT NULL,
+    id string(36) NOT NULL PRIMARY KEY,
     teacher_id string(36) NOT NULL,
     name text NOT NULL,
     foreign key(teacher_id) references users(id)
@@ -38,7 +26,7 @@ CREATE TABLE classes (
 
 CREATE TABLE tasks (
     id string(36) NOT NULL PRIMARY KEY,
-    class_id string(36),
+    class_id string(36) NOT NULL,
     start date default (datetime('now', 'localtime')),
     end date default (datetime('now', '+14 day', 'localtime')),
     name text,
@@ -75,6 +63,6 @@ CREATE TABLE attemptAnswers (
     answer_id string(36),
     question_id string(36),
     foreign key(attempt_id) references attempts(id),
-    foreign key(answer_id) references answer(id),
+    foreign key(answer_id) references answers(id),
     foreign key(question_id) references questions(id)
 );
