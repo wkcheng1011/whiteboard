@@ -1,11 +1,27 @@
 <%- include('_header'); %>
+<link rel="stylesheet" href="/stylesheets/chat.css">
 
-<section>
-    <a href="/message/" role="button" class="btn btn-danger">Back</a>
-    From: <%= from %>
-    At: <%= at %> <br>
-    Title: <%= title %><br>
-    Content <%= content %> <br>  
-</section>
+<main>
+    <a href="javascript:history.back()" role="button" class="btn btn-danger">Back</a>
+    <h1><%= messages[0].displayname %></h1>
+    <section id="message">
+        <% for (const message of messages) { %>
+            <div class="message <%= message.from_id == session.user.id ? "out" : "in" %>">
+                <div class="author"><%= message.user_name %></div>
+                <div class="content"><%= message.content %></div>
+                <small class="at"><%= message.at %></small>
+            </div>
+        <% } %>
+    </section>
+    
+    <section id="form" class="mt-2">
+        <form method="POST">
+            <div class="form-group">
+                <textarea name="message" class="form-control" placeholder="Message..."></textarea>
+            </div>
+            <input type="submit" role="button" class="btn btn-success" value="Send" />
+        </form>
+    </section>
+</main>
 
 <%- include("_footer"); %>
