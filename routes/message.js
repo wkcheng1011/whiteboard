@@ -8,21 +8,37 @@ let db = new Database("");
 
 router.get("/", async (req, res) => {
 	if (!req.session.user) {
-		req.session.redirect = "/message";
-		res.redirect("/login");
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
 	} else {
 		db = res.locals.db;
 
-		const messages = await db.all("select * from messages where channel_id in (select channel_id from participants where user_id = ?) and user_id != ?", req.session.user.id, req.session.user.id);
+		const classes = await db.all("select * from classes");
+		const users = await db.all("select * from users");
 
-		res.render("message", { messages });
+		const messages = (await db.all("select count(*) as cnt, * from messages group by to_id order by at desc")).filter(message => {
+			return message.type == 0 && message.to_id == req.session.user.id || message.type == 1
+		}).map(message => {
+			if (message.type == 0) { // DM
+				message.name = users.filter(user => user.id == message.from_id)[0].name;
+				message.target_id = message.from_id;
+			} else { // GM
+				message.name = classes.filter(_class => _class.id == message.to_id)[0].name;
+				message.target_id = message.to_id;
+			}
+			return message;
+		}).sort((m1, m2) => {
+			return new Date(m2.at) - new Date(m1.at);
+		});
+
+		return res.render("message", { messages });
 	}
 });
 
 router.get("/new", async (req, res) => {
 	if (!req.session.user) {
-		req.session.redirect = "/message/new";
-		res.redirect("/login");
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
 	} else {
 		db = res.locals.db;
 		const stmt = await db.prepare("select * from users where id != ?");
@@ -33,8 +49,8 @@ router.get("/new", async (req, res) => {
 
 router.post("/new", async (req, res) => {
     if (!req.session.user) {
-		req.session.redirect = "/message/new";
-		res.redirect("/login");
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
 	} else {
 		db = res.locals.db;
         const from_id = req.session.user.id;
@@ -70,28 +86,37 @@ router.post("/new", async (req, res) => {
 	}
 });
 
-router.get("/*", async (req, res) => {
+router.get(/\/(\d)\/(.{36})/, async (req, res) => {
 	if (!req.session.user) {
-		req.session.redirect = "/message/" + req.params[0];
-		res.redirect("/login");
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
 	} else {
 		db = res.locals.db;
-		const id = req.params[0];
+		const [type, id] = [req.params[0], req.params[1]];
+
+		if ([0, 1].indexOf(type) == 1) {
+			return res.render("error", { message: "Not a valid type", error: type });
+		}
 
 		if (!validator.isUUID(id)) {
 			return res.render("error", { message: "Not a valid UUID", error: id });
 		}
 
-		const result = await db.get("select users.name as f, at, title, content from messages, users where messages.id = ? and user_id = users.id", id);
-		if (!result) {
+		let messages;
+		if (type == 0) { // DM
+			messages = await db.all("select users.name as displayname, * from messages, users where from_id = ? and from_id = users.id", id);
+		} else { // GM
+			messages = await db.all("select classes.name as displayname, users.name as user_name, * from messages, classes, users where to_id = ? and to_id = classes.id and from_id = users.id", id);
+		}
+
+		if (messages.length == 0) {
 			return res.render("error", {
-				message: "Message does not exist",
+				message: "No messages",
 				error: id,
 			});
 		}
-		const { f, at, title, content } = result;
 
-		return res.render("messageView", { from: f, at, title, content });
+		return res.render("messageView", { messages });
 	}
 });
 module.exports = router;
