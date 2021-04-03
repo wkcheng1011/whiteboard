@@ -1,4 +1,11 @@
-From: <%= from %> <br>
-At: <%= at %> <br>
-Title: <%= title %><br>
-Content <%= content %> <br>  
+<%- include('_header'); %>
+
+<section>
+    <a href="/message/" role="button" class="btn btn-danger">Back</a>
+    From: <%= from %>
+    At: <%= at %> <br>
+    Title: <%= title %><br>
+    Content <%= content %> <br>  
+</section>
+
+<%- include("_footer"); %>
