@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
         db = res.locals.db;
 
 		const quote = await (await fetch("https://api.quotable.io/random")).json();
-        const tasks = await db.all("select tasks.id as task_id, tasks.name as task_name, classes.name as class_name, start, end from tasks, classes where tasks.class_id = classes.id");
+        const tasks = await db.all("select tasks.id as task_id, tasks.name as task_name, classes.name as class_name, start, end, * from tasks, classes where tasks.class_id = classes.id");
         
 		const messages = await db.all("select * from messages where (to_id = ? and type = 0) or type = 1", req.session.user.id);
 		
