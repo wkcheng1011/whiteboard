@@ -45,7 +45,7 @@ async function main() {
 		);
 	}
 	stmts["messages"] = await db.prepare(`insert into messages values (?, ?, ?, ?, datetime('now', ?, 'localtime'), ?, ?)`);
-	stmts["tasks"] = await db.prepare(`insert into tasks values (?, ?, (datetime('now', ?, 'localtime')), (datetime('now', ?, 'localtime')), ?)`);
+	stmts["tasks"] = await db.prepare(`insert into tasks values (?, ?, (datetime('now', ?, 'localtime')), (datetime('now', ?, 'localtime')), ?, ?)`);
 
 	// Users (10 Students, 3 Teachers)
 	const students = [];
@@ -129,17 +129,24 @@ async function main() {
 		const _uuid = uuid();
 		tasks.push(_uuid);
 		const _class = random(0, Object.keys(classes).length);
-		const startDay = random(1, 14);
-		const duration = random(1, 14);
+		const startDay = random(-14, -7);
+		const endDay = random(1, 14);
 
 		await stmts.tasks.run(
 			_uuid,
 			Object.keys(classes)[_class],
-			`+${startDay} day`,
-			`+${startDay + duration} day`,
-			`Task ${i}`
+			`${startDay} day`,
+			`+${endDay} day`,
+			`Task ${i}`,
+			`
+# Task ${i}
+
+## Sub heading
+
+This is content. The cat jump over the lazy dog.
+			`
 		);
-		console.log("task", { i, _uuid, _class, startDay, duration });
+		console.log("task", { i, _uuid, _class, startDay, endDay });
 
 		// Each task have 5-10 questions
 		const questions = [];

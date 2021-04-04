@@ -27,31 +27,32 @@ CREATE TABLE classes (
 CREATE TABLE tasks (
     id string(36) NOT NULL PRIMARY KEY,
     class_id string(36) NOT NULL,
-    start date default (datetime('now', 'localtime')),
-    end date default (datetime('now', '+14 day', 'localtime')),
-    name text,
+    start date NOT NULL,
+    end date NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL,
     foreign key(class_id) references classes(id)
 );
 
 CREATE TABLE questions (
     id string(36) NOT NULL PRIMARY KEY,
-    task_id string(36),
-    content text,
+    task_id string(36) NOT NULL,
+    content text NOT NULL,
     foreign key(task_id) references tasks(id)
 );
 
 CREATE TABLE answers (
     id string(36) NOT NULL PRIMARY KEY,
-    question_id string(36),
-    content text,
-    correct boolean,
+    question_id string(36) NOT NULL,
+    content text NOT NULL,
+    correct boolean NOT NULL,
     foreign key(question_id) references questions(id)
 );
 
 CREATE TABLE attempts (
     id string(36) NOT NULL PRIMARY KEY,
-    task_id string(36),
-    user_id string(36),
+    task_id string(36) NOT NULL,
+    user_id string(36) NOT NULL,
     at date default (datetime('now', 'localtime')),
     foreign key(task_id) references tasks(id),
     foreign key(user_id) references users(id)
@@ -59,9 +60,9 @@ CREATE TABLE attempts (
 
 CREATE TABLE attemptAnswers (
     id string(36) NOT NULL PRIMARY KEY,
-    attempt_id string(36),
-    answer_id string(36),
-    question_id string(36),
+    attempt_id string(36) NOT NULL,
+    answer_id string(36) NOT NULL,
+    question_id string(36) NOT NULL,
     foreign key(attempt_id) references attempts(id),
     foreign key(answer_id) references answers(id),
     foreign key(question_id) references questions(id)
