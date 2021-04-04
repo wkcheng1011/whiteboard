@@ -109,6 +109,10 @@ router.get(/\/(\d)\/(.{36})/, async (req, res) => {
 			messages = await db.all("select classes.name as displayname, users.name as user_name, * from messages, classes, users where to_id = ? and to_id = classes.id and from_id = users.id", id);
 		}
 
+		messages = messages.sort((m1, m2) => {
+			return new Date(m1.at) - new Date(m2.at);
+		});
+
 		if (messages.length == 0) {
 			return res.render("error", {
 				message: "No messages",
