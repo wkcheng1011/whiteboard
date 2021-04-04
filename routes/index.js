@@ -13,11 +13,15 @@ router.get("/", async (req, res) => {
         db = res.locals.db;
 
 		const quote = await (await fetch("https://api.quotable.io/random")).json();
-        const tasks = await db.all("select tasks.id as task_id, tasks.name as task_name, classes.name as class_name, start, end, * from tasks, classes where tasks.class_id = classes.id");
-        
+        const tasks = await db.all("select tasks.id as task_id, tasks.name as task_name, classes.name as class_name, * from tasks, classes where tasks.class_id = classes.id and tasks.id not in (select task_id from attempts where user_id = ?)", req.session.user.id);
+        const attempts = await db.all("select attempts.id as attempt_id, * from attempts, tasks where user_id = ? and attempts.task_id = tasks.id", req.session.user.id);
+		for (const attempt of attempts) {
+			const answers = await db.all("select questions.id as question_id, correct from attemptAnswers, questions, answers where attempt_id = ? and attemptAnswers.question_id = questions.id and attemptAnswers.answer_id = answers.id", attempt.attempt_id);
+			attempt.answers = answers;
+		}
 		const messages = await db.all("select * from messages where (to_id = ? and type = 0) or type = 1", req.session.user.id);
 		
-		res.render("index", { quote, tasks, badgeCount: messages.length });
+		res.render((req.session.user.type == 0 ? "students" : "teachers") + "/index", { quote, tasks, attempts, badgeCount: messages.length });
 	}
 });
 
