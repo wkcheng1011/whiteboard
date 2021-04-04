@@ -1,0 +1,39 @@
+<%- include('_header'); %>
+
+<h1><%= meta.task_name %></h1>
+<h4>Attempted at <%= meta.at %> by <%= meta.user_name %></h4>
+
+<main>
+    <section>
+        <textarea><%= meta.description %></textarea>
+    </section>
+    <section>
+        <form method="post" id="form">
+            <% for (const question of questions) { %>
+                <div class="form-group">
+                    <h5>
+                        <%= question.content %>
+                    </h5>
+                    <% for (const answer of question.answers) { %>
+                        <div class="form-check">
+                            <input type="radio" role="button" class="form-check-input" name="<%= question.id %>" id="<%= answer.id %>" disabled="disabled" value="<%= answer.id %>"
+                            <%= answer.id == question.selected ? "checked" : "" %>>
+                            <label class="form-check-label" for="<%= answer.id %>"><%= answer.content %></label>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+        </form>
+    </section>
+</main>
+
+<script>
+    const simplemde = new SimpleMDE({
+        status: false,
+        toolbar: false,
+        toolbarTips: false
+    });
+    simplemde.togglePreview();
+</script>
+
+<%- include("_footer"); %>

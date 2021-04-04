@@ -1,0 +1,38 @@
+<%- include('../_header'); %>
+
+<h1><%= taskMeta.name %></h1>
+
+<main>
+    <section>
+        <textarea><%= taskMeta.description %></textarea>
+    </section>
+    <section>
+        <form method="post" id="form">
+            <% for (const question of questions) { %>
+                <div class="form-group">
+                    <h5>
+                        <%= question.content %>
+                    </h5>
+                    <% for (const answer of question.answers) { %>
+                        <div class="form-check">
+                            <input type="radio" role="button" class="form-check-input" name="<%= question.id %>" id="<%= answer.id %>" required="required" value="<%= answer.id %>">
+                            <label class="form-check-label" for="<%= answer.id %>"><%= answer.content %></label>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+        </form>
+        <button class="btn btn-primary" type="submit" form="form">Submit</button>
+        <button class="btn btn-warning">Reset</button>
+    </section>
+</main>
+
+<script>
+    const simplemde = new SimpleMDE({
+        status: false,
+        toolbar: false,
+        toolbarTips: false
+    });
+    simplemde.togglePreview();
+</script>
+<%- include("../_footer"); %>
