@@ -1,0 +1,65 @@
+<%- include('../_header'); %>
+<script src="scripts/index.js" defer></script>
+
+<section>
+    <blockquote class="blockquote text-right">
+        <p class="mb-0"><%= quote.content %></p>
+        <footer class="blockquote-footer"><cite><%= quote.author %></cite></h3>
+    </blockquote>
+</section>
+<section>
+    <h5>You have a total of <%= tasks.length %> pending tasks.</h5>
+    <div class="table-responsive table-striped thead-dark">
+        <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
+                    <th class="w-25" data-sortable="true">From</th>
+                    <th class="w-25" data-sortable="true">To</th>
+                    <th class="w-25" data-sortable="true">Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (const task of tasks) { %>
+                    <tr <%= (new Date(task.end) - new Date()) < 86400 * 1000 ? 'class="table-warning"' : '' %>>
+                        <td><a href="/tasks/contents/<%= task.task_id %>"><%= task.task_name %></a></td>
+                        <td class="time start"><%= task.start %></td>
+                        <td class="time end"><%= task.end %></td>
+                        <td>
+                            <a href="/messages/1/<%= task.class_id %>"><%= task.class_name %></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</section>
+<section>
+    <h5>You finished <%= attempts.length %> tasks.</h5>
+    <div class="table-responsive table-striped thead-dark">
+        <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
+                    <th class="w-25" data-sortable="true">At</th>
+                    <th class="w-25" data-sortable="true">Score</th>
+                    <th class="w-25">Attempt Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (const attempt of attempts) { %>
+                    <tr>
+                        <td><%= attempt.name %></td>
+                        <td class="time start"><%= attempt.at %></td>
+                        <td><%= (attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100 %>%</td>
+                        <td>
+                            <a href="/tasks/attempts/<%= attempt.attempt_id %>"><i class="fa fa-external-link"></i></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<%- include("../_footer"); %> 
