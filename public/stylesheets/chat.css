@@ -13,3 +13,7 @@ main > #message {
 main > #form {
     flex: 1;
 }
+
+.message {
+    border-radius: 0.5rem;
+}

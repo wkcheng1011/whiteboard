@@ -6,10 +6,10 @@
     <h1><%= messages[0].displayname %></h1>
     <section id="message">
         <% for (const message of messages) { %>
-            <div class="message <%= message.from_id == session.user.id ? "out" : "in" %>">
-                <div class="author"><%= message.user_name %></div>
-                <div class="content"><%= message.content %></div>
-                <small class="at"><%= message.at %></small>
+            <div class="message w-50 mb-3 <%= message.from_id == session.user.id ? "out bg-primary text-light ml-auto" : "in bg-white mr-auto" %>">
+                <div class="author py-1 px-2"><%= message.user_name %></div>
+                <div class="content py-1 px-2"><%= message.content %></div>
+                <p class="small px-1 py-1 text-right"><%= message.at %></small>
             </div>
         <% } %>
     </section>
