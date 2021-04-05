@@ -2,6 +2,7 @@ const fs = require("fs");
 const sqlite = require("sqlite-async");
 const uuid = require("uuid/v4");
 const md5 = require("md5");
+const randomWords = require('random-words');
 
 const dbFile = "db.sqlite3";
 
@@ -28,6 +29,7 @@ async function main() {
 	const tableArgCount = {
 		users: 5,
 		classes: 3,
+		members: 2,
 		questions: 3,
 		answers: 4,
 		attempts: 4,
@@ -44,7 +46,7 @@ async function main() {
 				.join(",")})`
 		);
 	}
-	stmts["messages"] = await db.prepare(`insert into messages values (?, ?, ?, ?, datetime('now', ?, 'localtime'), ?, ?)`);
+	stmts["messages"] = await db.prepare(`insert into messages values (?, ?, ?, ?, datetime('now', ?, 'localtime'), ?)`);
 	stmts["tasks"] = await db.prepare(`insert into tasks values (?, ?, (datetime('now', ?, 'localtime')), (datetime('now', ?, 'localtime')), ?, ?)`);
 
 	// Users (10 Students, 3 Teachers)
@@ -56,7 +58,7 @@ async function main() {
 		students.push(_uuid);
 		await stmts.users.run(
 			_uuid,
-			`Student ${i}`,
+			`Student ${randomWords()}`,
 			0,
 			`student${i}`,
 			md5(`student${i}`)
@@ -68,7 +70,7 @@ async function main() {
 		teachers.push(_uuid);
 		await stmts.users.run(
 			_uuid,
-			`Teacher ${i}`,
+			`Teacher ${randomWords()}`,
 			1,
 			`teacher${i}`,
 			md5(`teacher${i}`)
@@ -84,9 +86,12 @@ async function main() {
 		const teacher = random(0, teachers.length);
 
 		classes[_uuid] = teacher;
-		await stmts.classes.run(_uuid, teachers[teacher], `Class ${i}`);
+		await stmts.classes.run(_uuid, teachers[teacher], `Class ${randomWords()}`);
 		console.log("class", { i, _uuid, teacher: teacher+1 });
 	}
+
+	// Distribute users into random classes
+
 
 	// 6 Class channels and some random DM channels
 	const messages = [];
@@ -100,7 +105,7 @@ async function main() {
 			let at = random(-3600, 3600);
 			at = (at > 0 ? "+" : "") + at;
 
-			await stmts.messages.run(_uuid, users[from], _class, 1, `${at} second`, "Sample title " + i, "Sample message " + i);
+			await stmts.messages.run(_uuid, users[from], _class, 1, `${at} second`, randomWords({min: 5, max: 20, join: ' '}));
 			console.log("messages", { i, _uuid, from: from, _class });
 		}
 	}
@@ -118,7 +123,7 @@ async function main() {
 		let at = random(-3600, 3600);
 		at = (at > 0 ? "+" : "") + at;
 
-		await stmts.messages.run(_uuid, students[from], students[to], 0, `${at} second`, "Sample title " + i, "Sample message " + i);
+		await stmts.messages.run(_uuid, students[from], students[to], 0, `${at} second`, randomWords({min: 5, max: 20, join: ' '}));
 		console.log("messages", { i, _uuid, from, to });
 	}
 
@@ -137,13 +142,13 @@ async function main() {
 			Object.keys(classes)[_class],
 			`${startDay} day`,
 			`+${endDay} day`,
-			`Task ${i}`,
+			`Task ${randomWords()}`,
 			`
-# Task ${i}
+# Heading
 
 ## Sub heading
 
-This is content. The cat jump over the lazy dog.
+This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 			`
 		);
 		console.log("task", { i, _uuid, _class, startDay, endDay });
@@ -154,7 +159,7 @@ This is content. The cat jump over the lazy dog.
 			const _uuid2 = uuid();
 			questions.push(_uuid2);
 
-			await stmts.questions.run(_uuid2, _uuid, `Sample Question`);
+			await stmts.questions.run(_uuid2, _uuid, randomWords({min: 5, max: 10, join: ' '}));
 			console.log("question", {j, _uuid2, _uuid});
 
 			const answersSize = random(3, 5);
