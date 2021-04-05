@@ -1,6 +1,6 @@
 const express = require("express");
 const { Database } = require("sqlite3");
-const uuid = require("uuid/v4");
+const { v4: uuid } = require('uuid');
 const { default: validator } = require("validator");
 const router = express.Router();
 
