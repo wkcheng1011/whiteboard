@@ -12,7 +12,6 @@ CREATE TABLE messages (
     to_id string(36) NOT NULL,
     type integer NOT NULL,
     at date default (datetime('now', 'localtime')),
-    title text NOT NULL,
     content text NOT NULL,
     foreign key(from_id) references users(id)
 );
@@ -22,6 +21,14 @@ CREATE TABLE classes (
     teacher_id string(36) NOT NULL,
     name text NOT NULL,
     foreign key(teacher_id) references users(id)
+);
+
+CREATE TABLE members (
+    class_id string(36) NOT NULL,
+    student_id string(36) NOT NULL,
+    PRIMARY KEY(class_id, student_id),
+    foreign key(class_id) references classes(id),
+    foreign key(student_id) references users(id)
 );
 
 CREATE TABLE tasks (
