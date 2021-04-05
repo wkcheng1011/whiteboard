@@ -13,13 +13,13 @@ for (const time of times) {
         unit = " days";
     } else if (diff > 3600) {
         magnitude = diff / 3600;
-        unit = " hours";
+        unit = " hrs";
     } else if (diff > 60) {
         magnitude = diff / 60;
-        unit = " minutes";
+        unit = " mins";
     } else {
         magnitude = diff;
-        unit = " seconds";
+        unit = " secs";
     }
     let txt;
     if (time.classList.contains("start")) {
@@ -29,5 +29,3 @@ for (const time of times) {
     }
     time.textContent = txt;
 }
-
-// Make whole row clickable
