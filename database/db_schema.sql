@@ -66,11 +66,11 @@ CREATE TABLE attempts (
 );
 
 CREATE TABLE attemptAnswers (
-    id string(36) NOT NULL PRIMARY KEY,
     attempt_id string(36) NOT NULL,
-    answer_id string(36) NOT NULL,
     question_id string(36) NOT NULL,
+    answer_id string(36) NOT NULL,
+    PRIMARY KEY(attempt_id, question_id, answer_id),
     foreign key(attempt_id) references attempts(id),
-    foreign key(answer_id) references answers(id),
-    foreign key(question_id) references questions(id)
+    foreign key(question_id) references questions(id),
+    foreign key(answer_id) references answers(id)
 );

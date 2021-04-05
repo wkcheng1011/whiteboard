@@ -1,6 +1,6 @@
 const fs = require("fs");
 const sqlite = require("sqlite-async");
-const uuid = require("uuid/v4");
+const { v4: uuid } = require('uuid');
 const md5 = require("md5");
 const randomWords = require('random-words');
 
@@ -32,8 +32,7 @@ async function main() {
 		members: 2,
 		questions: 3,
 		answers: 4,
-		attempts: 4,
-		attemptAnswers: 4
+		attemptAnswers: 3
 	};
 
 	// Prepare database statements
@@ -48,6 +47,7 @@ async function main() {
 	}
 	stmts["messages"] = await db.prepare(`insert into messages values (?, ?, ?, ?, datetime('now', ?, 'localtime'), ?)`);
 	stmts["tasks"] = await db.prepare(`insert into tasks values (?, ?, (datetime('now', ?, 'localtime')), (datetime('now', ?, 'localtime')), ?, ?)`);
+	stmts["attempts"] = await db.prepare(`insert into attempts (id, task_id, user_id) values (?, ?, ?)`);
 
 	// Users (10 Students, 3 Teachers)
 	const students = [];
@@ -91,7 +91,14 @@ async function main() {
 	}
 
 	// Distribute users into random classes
-
+	for (const _class in classes) {
+		for (const student of students) {
+			if (random(0, 10) % 3 == 0) {
+				await stmts.members.run(_class, student);
+				console.log("member", {_class, student});
+			}
+		}
+	}
 
 	// 6 Class channels and some random DM channels
 	const messages = [];
@@ -154,10 +161,10 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 		console.log("task", { i, _uuid, _class, startDay, endDay });
 
 		// Each task have 5-10 questions
-		const questions = [];
+		const questions = {};
 		for (let j = 0; j < random(5, 10); j++) {
 			const _uuid2 = uuid();
-			questions.push(_uuid2);
+			questions[_uuid2] = [];
 
 			await stmts.questions.run(_uuid2, _uuid, randomWords({min: 5, max: 10, join: ' '}));
 			console.log("question", {j, _uuid2, _uuid});
@@ -167,10 +174,25 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 
 			for (let k = 0; k < answersSize; k++) {
 				const _uuid3 = uuid();
+				questions[_uuid2].push(_uuid3);
 				await stmts.answers.run(_uuid3, _uuid2, correct == k ? "Correct" : "Incorrect", correct == k);
 				console.log("answer", { k, _uuid3, _uuid2, correct: correct == k });
 			}
-			
+		}
+
+		for (const student of students) {
+			if (random(0, 10) % 3 == 0) {
+				const _uuid4 = uuid();
+				await stmts.attempts.run(_uuid4, _uuid, student);
+				console.log("attempt", {_uuid4, _uuid, student});
+				for (const question in questions) {
+					const answers = questions[question];
+					const answer = random(0, answers.length);
+
+					await stmts.attemptAnswers.run(_uuid4, question, answers[answer]);
+					console.log("attemptAnswer", {_uuid4, question, ans: answers[answer]});
+				}
+			}
 		}
 	}
 
