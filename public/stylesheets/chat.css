@@ -16,4 +16,5 @@ main > #form {
 
 .message {
     border-radius: 0.5rem;
+    border: black solid 1px;
 }
