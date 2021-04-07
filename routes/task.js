@@ -105,4 +105,46 @@ router.post(/\/contents\/(.{36})/, async (req, res) => {
 	}
 });
 
+router.get("/", async (req, res) => {
+	if (!req.session.user) {
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
+	} else if (req.session.user.type != 1) {
+		return res.redirect("/");
+	} else {
+        db = res.locals.db;
+
+		return res.render("teachers/task");
+	}
+});
+
+router.get("/new", async (req, res) => {
+	if (!req.session.user) {
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
+	} else if (req.session.user.type != 1) {
+		return res.redirect("/");
+	} else {
+        db = res.locals.db;
+
+		return res.render("teachers/taskNew");
+	}
+});
+
+router.post("/new", async (req, res) => {
+	if (!req.session.user) {
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
+	} else if (req.session.user.type != 1) {
+		return res.redirect("/");
+	} else {
+        db = res.locals.db;
+
+		// const test = JSON.parse(req.body.test);
+
+		// await db.run("insert into tasks");
+		return res.render("teachers/taskNew");
+	}
+});
+
 module.exports = router;
