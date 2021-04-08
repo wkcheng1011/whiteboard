@@ -67,10 +67,8 @@ CREATE TABLE attempts (
 
 CREATE TABLE attemptAnswers (
     attempt_id string(36) NOT NULL,
-    question_id string(36) NOT NULL,
     answer_id string(36) NOT NULL,
-    PRIMARY KEY(attempt_id, question_id, answer_id),
+    PRIMARY KEY(attempt_id, answer_id),
     foreign key(attempt_id) references attempts(id),
-    foreign key(question_id) references questions(id),
     foreign key(answer_id) references answers(id)
 );

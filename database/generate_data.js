@@ -32,7 +32,7 @@ async function main() {
 		members: 2,
 		questions: 3,
 		answers: 4,
-		attemptAnswers: 3
+		attemptAnswers: 2
 	};
 
 	// Prepare database statements
@@ -189,7 +189,7 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 					const answers = questions[question];
 					const answer = random(0, answers.length);
 
-					await stmts.attemptAnswers.run(_uuid4, question, answers[answer]);
+					await stmts.attemptAnswers.run(_uuid4, answers[answer]);
 					console.log("attemptAnswer", {_uuid4, question, ans: answers[answer]});
 				}
 			}
