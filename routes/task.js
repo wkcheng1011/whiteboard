@@ -33,7 +33,7 @@ router.get(/\/attempts\/(.{36})/, async (req, res) => {
 			const answers = await db.all("select * from answers where question_id = ?", question.id);
 			question.answers = shuffle(answers);
 
-			const selectedAnswer = await db.get("select attemptAnswers.answer_id from attempts, attemptAnswers where attempts.id = ? and attemptAnswers.attempt_id = attempts.id and attemptAnswers.question_id = ?", id, question.id);
+			const selectedAnswer = await db.get("select attemptAnswers.answer_id from attempts, attemptAnswers where attempts.id = ? and attemptAnswers.attempt_id = attempts.id and attemptAnswers.answer_id in (select id from answers where answers.question_id = ?)", id, question.id);
 			question.selected = selectedAnswer.answer_id;
 		}
 
@@ -96,9 +96,8 @@ router.post(/\/contents\/(.{36})/, async (req, res) => {
 		await db.run("insert into attempts (id, task_id, user_id) values (?, ?, ?)", _uuid, id, req.session.user.id);
 
 		for (const question_id in req.body) {
-			const _uuid2 = uuid();
 			const answer_id = req.body[question_id];
-			await db.run("insert into attemptAnswers values (?, ?, ?, ?)", _uuid2, _uuid, answer_id, question_id);
+			await db.run("insert into attemptAnswers values (?, ?)", _uuid, answer_id);
 		}
 
 		return res.redirect(`/tasks/attempts/${_uuid}`);
@@ -127,7 +126,9 @@ router.get("/new", async (req, res) => {
 	} else {
         db = res.locals.db;
 
-		return res.render("teachers/taskNew");
+		const classes = await db.all("select * from classes");
+
+		return res.render("teachers/taskNew", { classes });
 	}
 });
 
@@ -140,10 +141,44 @@ router.post("/new", async (req, res) => {
 	} else {
         db = res.locals.db;
 
-		// const test = JSON.parse(req.body.test);
+		const task_uuid = uuid();
 
-		// await db.run("insert into tasks");
-		return res.render("teachers/taskNew");
+		await db.run("insert into tasks values (?, ?, ?, ?, ?, ?)", 
+			task_uuid, 
+			req.body.class,
+			req.body.start,
+			req.body.end,
+			req.body.title,
+			req.body.description
+		);
+
+		const questions = {};
+		for (const key in req.body) {
+			let value;
+			if (value = key.match(/^q-(.{5})$/)) { // Question
+				questions[value[1]] = questions[value[1]] || {};
+				questions[value[1]].question = req.body[key];
+			} else if (value = key.match(/^q-(.{5})-c-(.{5})$/)) { // Answer
+				questions[value[1]] = questions[value[1]] || {};
+				questions[value[1]]["a-" + value[2]] = req.body[key];
+			} else if (value = key.match(/^q-(.{5})-r$/)) { // Correct
+				questions[value[1]] = questions[value[1]] || {};
+				questions[value[1]].correct = "a-" + req.body[key];
+			}
+		}
+
+		for (const question_id in questions) {
+			const question = questions[question_id];
+			const question_uuid = uuid();
+			await db.run("insert into questions values (?, ?, ?)", question_uuid, task_uuid, question.question);
+			for (const answer_id of Object.keys(question).filter(a => a.startsWith("a-"))) {
+				const answer = question[answer_id];
+				const answer_uuid = uuid();
+				await db.run("insert into answers values (?, ?, ?, ?)", answer_uuid, question_uuid, answer, question.correct == answer_id);
+			}
+		}
+
+		return res.redirect("/tasks");
 	}
 });
 

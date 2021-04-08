@@ -8,6 +8,14 @@
                 <span class="input-group-text">Title</span>
             </div>
             <input type="text" class="form-control" name="title" required>
+            <select class="form-control" name="class" required>
+                <% for (const _class of classes) { %>
+                    <option value="<%= _class.id %>"><%= _class.name %></option>
+                <% } %>
+            </select>
+            <div class="input-group-append">
+                <span class="input-group-text">Class</span>
+            </div>
         </div>
     
         <div class="input-group">
