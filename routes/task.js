@@ -13,7 +13,7 @@ function shuffle(array) {
 	return array;
 }
 
-router.get(/\/attempts\/(.{36})/, async (req, res) => {
+router.get(/\/attempt\/(.{36})/, async (req, res) => {
 	if (!req.session.user) {
 		req.session.redirect = req.originalUrl;
 		return res.redirect("/login");
@@ -100,7 +100,7 @@ router.post(/\/contents\/(.{36})/, async (req, res) => {
 			await db.run("insert into attemptAnswers values (?, ?)", _uuid, answer_id);
 		}
 
-		return res.redirect(`/tasks/attempts/${_uuid}`);
+		return res.redirect(`/tasks/attempt/${_uuid}`);
 	}
 });
 
@@ -113,7 +113,13 @@ router.get("/", async (req, res) => {
 	} else {
         db = res.locals.db;
 
-		return res.render("teachers/task");
+		const tasks = await db.all("select * from tasks");
+		for (const task of tasks) {
+			const attemptAnswers = await db.all("select * from answers, attemptAnswers where attemptAnswers.answer_id = answers.id and attemptAnswers.attempt_id in (select id from attempts where task_id = ?)", task.id);
+			task.average = attemptAnswers.filter(a => a.correct).length / attemptAnswers.length;
+		}
+
+		return res.render("teachers/task", { tasks });
 	}
 });
 
@@ -146,8 +152,8 @@ router.post("/new", async (req, res) => {
 		await db.run("insert into tasks values (?, ?, ?, ?, ?, ?)", 
 			task_uuid, 
 			req.body.class,
-			req.body.start,
-			req.body.end,
+			req.body.start.replace("T", " ") + ":00",
+			req.body.end.replace("T", " ") + ":00",
 			req.body.title,
 			req.body.description
 		);
