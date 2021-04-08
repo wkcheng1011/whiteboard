@@ -53,7 +53,7 @@
                         <td class="time start"><%= attempt.at %></td>
                         <td><%= (attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100 %>%</td>
                         <td>
-                            <a href="/tasks/attempts/<%= attempt.attempt_id %>"><i class="fa fa-external-link"></i></a>
+                            <a href="/tasks/attempt/<%= attempt.attempt_id %>"><i class="fa fa-external-link"></i></a>
                         </td>
                     </tr>
                 <% } %>
