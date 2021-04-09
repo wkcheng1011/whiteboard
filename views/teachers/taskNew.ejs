@@ -1,0 +1,78 @@
+<%- include('../_header'); %>
+<script src="/scripts/taskNew.js" defer></script>
+
+<section>
+    <form method="POST">
+        <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Title</span>
+            </div>
+            <input type="text" class="form-control" name="title" required>
+            <select class="form-control" name="class" required>
+                <% for (const _class of classes) { %>
+                    <option value="<%= _class.id %>"><%= _class.name %></option>
+                <% } %>
+            </select>
+            <div class="input-group-append">
+                <span class="input-group-text">Class</span>
+            </div>
+        </div>
+    
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Start</span>
+            </div>
+            <input type="datetime-local" class="form-control" name="start" id="start" required>
+            <input type="datetime-local" class="form-control" name="end" id="end" required>
+            <div class="input-group-append">
+                <span class="input-group-text">End</span>
+            </div>
+        </div>
+        
+        <h1>Description</h1>
+        <textarea name="description"></textarea>
+    
+        <h1>Questions</h1>
+        <div id="questionContainers">
+            
+        </div>
+        <input type="submit" class="btn btn-success" value="Submit"></button>
+    </form>
+</section>
+
+<template id="questionContainerTemp">
+    <div class="questionContainer">
+        <div class="input-group">
+            <input type="text" class="form-control" required placeholder="Question" />
+        </div>
+    </div>
+</template>
+
+<template id="answerTemp">
+    <div class="input-group">
+        <div class="input-group-text">
+            <input type="radio">
+        </div>
+        <input type="text" class="form-control" placeholder="Answer" required>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary removeABtn" type="button">
+                <i class="fa fa-remove"></i>
+            </button>
+            <button class="btn btn-outline-secondary addABtn" type="button">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</template>
+
+<template id="actionTemp">
+    <div class="d-flex">
+        <button class="btn btn-danger col removeQBtn">
+            <i class="fa fa-remove"></i>
+        </button>
+        <button class="btn btn-primary col addQBtn">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</template>
+<%- include('../_footer'); %>

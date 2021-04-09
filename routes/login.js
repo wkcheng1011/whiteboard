@@ -6,6 +6,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
     if ("logout" in req.query) {
         req.session.user = undefined;
+		req.session.redirect = undefined;
         res.redirect("/login");
     } else if (req.session.user) {
         res.redirect(req.session.redirect || "/");

@@ -1,0 +1,29 @@
+<%- include('../_header'); %>
+<script src="scripts/index.js" defer></script>
+
+<section>
+    <blockquote class="blockquote text-right">
+        <p class="mb-0"><%= quote.content %></p>
+        <footer class="blockquote-footer"><cite><%= quote.author %></cite></h3>
+    </blockquote>
+</section>
+<section>
+    <h5>Task statistics</h5>
+    <div class="table-responsive table-striped thead-dark">
+        <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
+                    <th class="w-25" data-sortable="true">Class</th>
+                    <th class="w-25" data-sortable="true">Progress</th>
+                    <th class="w-25" data-sortable="true">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<%- include("../_footer"); %> 
