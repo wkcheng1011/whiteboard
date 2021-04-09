@@ -1,65 +1,154 @@
 <%- include('../_header'); %>
 <script src="scripts/index.js" defer></script>
+<link rel="stylesheet" href="stylesheets/index.css">
+<link rel="stylesheet" href="stylesheets/collapse-list.css">
 
-<section>
-    <blockquote class="blockquote text-right">
-        <p class="mb-0"><%= quote.content %></p>
-        <footer class="blockquote-footer"><cite><%= quote.author %></cite></h3>
-    </blockquote>
-</section>
-<section>
-    <h5>You have a total of <%= tasks.length %> pending tasks.</h5>
-    <div class="table-responsive table-striped thead-dark">
-        <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
-                    <th class="w-25" data-sortable="true">From</th>
-                    <th class="w-25" data-sortable="true">To</th>
-                    <th class="w-25" data-sortable="true">Class</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (const task of tasks) { %>
-                    <tr <%= (new Date(task.end) - new Date()) < 86400 * 1000 ? 'class="table-warning"' : '' %>>
-                        <td><a href="/tasks/contents/<%= task.task_id %>"><%= task.task_name %></a></td>
-                        <td class="time start"><%= task.start %></td>
-                        <td class="time end"><%= task.end %></td>
-                        <td>
-                            <a href="/messages/1/<%= task.class_id %>"><%= task.class_name %></a>
-                        </td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</section>
-<section>
-    <h5>You finished <%= attempts.length %> tasks.</h5>
-    <div class="table-responsive table-striped thead-dark">
-        <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
-                    <th class="w-25" data-sortable="true">At</th>
-                    <th class="w-25" data-sortable="true">Score</th>
-                    <th class="w-25">Attempt Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (const attempt of attempts) { %>
-                    <tr>
-                        <td><%= attempt.name %></td>
-                        <td class="time start"><%= attempt.at %></td>
-                        <td><%= (attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100 %>%</td>
-                        <td>
-                            <a href="/tasks/attempt/<%= attempt.attempt_id %>"><i class="fa fa-external-link"></i></a>
-                        </td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</section>
+<div class="jumbotron bg-info mb-0 text-white" style="padding-bottom: 70px;">
+    <h4 class="">
+        <img class="mr-1" src="/images/students.png" style="width: 80px;">
+        Hi! <%= session.user.name %></h4>
+    <hr class="my-2">
+    <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
+    <footer class="blockquote-footer text-right text-light"><cite><%= quote.author %></cite></footer>
+</div>
+
+<div class="card card-content bg-light" style="margin-top: -60px;">
+    <div id="accordion" class="card-body mt-2 text-secondary">
+        <h5>My Tasks 
+            <button class="btn btn-light float-right pt-0" style="font-size: 20px;">🔍</button>
+        </h5>
+        <!--data header-->
+        <div class="row content-header">
+            <div class="col rcorners" style="background-color: #6186db;">
+                <p class="mt-2 mb-0 p-0">All Tasks</p>
+                <p class="h3 m-0 p-0 font-weight-bold"><%= tasks.length+attempts.length %></p>
+            </div>
+            <div class="col rcorners" style="background-color: #8c8fd8;">
+                <p class="mt-2 mb-0 p-0">Pending</p>
+                <p class="h3 m-0 p-0 font-weight-bold"><%= tasks.length %></p>
+            </div>
+            <div class="col rcorners" style="background-color: #7bb0ae;">
+                <p class="mt-2 mb-0 p-0">Finished</p>
+                <p class="h3 m-0 p-0 font-weight-bold"><%= attempts.length %></p>
+            </div>
+        </div>
+        <!--data table-->
+        <div class="collapse-list mt-4">
+            <div class="collapse-list-item px-0">
+                <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapsePending" role="button" aria-expanded="true" aria-controls="collapsePending">
+                    <h4 style="color:#8c8fd8;">Pending<span class="mr-4"></span></h4>
+                </a>
+                <hr class="mt-0" />
+                <div class="collapse show" id="collapsePending">
+                    <% for (const task of tasks) { %>
+                        <div class="list-group bs-callout bs-callout-pending p-0">
+                            <a href="/tasks/contents/<%= task.task_id %>" class="list-group-item list-group-item-action">
+                              <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><%= task.task_name %></h5>
+                                <small class="time start"><%= task.start %></small>
+                              </div>
+                              <p class="mb-1">Due Day: <%= task.end %></p>
+                              <b class="mb-1 time end"><%= task.end %></b>
+                              <a href="/messages/1/<%= task.class_id %>" class="list-group-item list-group-item-action">For <b><%= task.class_name %></b></a>
+                            </a>
+                            
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapse-list mt-4">
+            <div class="collapse-list-item px-0">
+                <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapseFinished" role="button" aria-expanded="true" aria-controls="collapseFinished">
+                    <h4 style="color:#7bb0ae;">Finished<span class="mr-4"></span></h4>
+                </a>
+                <hr class="mt-0" />
+                <div class="collapse show" id="collapseFinished">
+                    <% for (const attempt of attempts) { %>
+                        <div class="list-group bs-callout bs-callout-finished p-0">
+                            <a href="/tasks/attempts/<%= attempt.attempt_id %>" class="list-group-item list-group-item-action">
+                              <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><%= attempt.name %></h5>
+                                <small class="time start"><%= attempt.at %></small>
+                              </div>
+                              <% 
+                                var cl = ((attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100) >= 50? 'text-success':'text-danger';
+                              %>
+                              <p class="mb-1">Score <b class="<%= cl %>"><%= (attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100 %>%
+                                </b></p>
+                              <small class="mb-1"><%= attempt.description %></small>
+                            </a>
+                            
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+
+
+
+<!-- 
+        <section class="mt-2">
+            <div class="table-responsive table-striped thead-dark">
+                <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
+                            <th class="w-25" data-sortable="true">From</th>
+                            <th class="w-25" data-sortable="true">To</th>
+                            <th class="w-25" data-sortable="true">Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const task of tasks) { %>
+                            <tr <%= (new Date(task.end) - new Date()) < 86400 * 1000 ? 'class="table-warning"' : '' %>>
+                                <td><a href="/tasks/contents/<%= task.task_id %>"><%= task.task_name %></a></td>
+                                <td class="time start"><%= task.start %></td>
+                                <td class="time end"><%= task.end %></td>
+                                <td>
+                                    <a href="/messages/1/<%= task.class_id %>"><%= task.class_name %></a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section>
+            <h5>You finished <%= attempts.length %> tasks.</h5>
+            <div class="table-responsive table-striped thead-dark">
+                <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="w-25" data-sortable="true" data-sorter="nameSorter">Name</th>
+                            <th class="w-25" data-sortable="true">At</th>
+                            <th class="w-25" data-sortable="true">Score</th>
+                            <th class="w-25">Attempt Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const attempt of attempts) { %>
+                            <tr>
+                                <td><%= attempt.name %></td>
+                                <td class="time start"><%= attempt.at %></td>
+                                <td><%= (attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100 %>%</td>
+                                <td>
+                                    <a href="/tasks/attempts/<%= attempt.attempt_id %>"><i class="fa fa-external-link"></i></a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div> -->
+
+
+
+</div>
+
+
 
 <%- include("../_footer"); %> 

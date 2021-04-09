@@ -1,0 +1,38 @@
+.btn {
+    box-shadow: none !important;
+    outline: 0;
+  }
+  
+  .collapse-list a:link,
+  .collapse-list a:visited {
+    color: #222;
+  }
+  
+  a:hover,
+  a:focus {
+    color: orange;
+  }
+  
+  .collapse-list-item span {
+    border: solid #222;
+    border-width: 0 1px 1px 0;
+    display: inline;
+    cursor: pointer;
+    padding: 3px;
+    position: absolute;
+    right: 0;
+    margin-top: 10px;
+  }
+  
+  .collapse-list-item a.btn.collapsed span {
+    transform: rotate(40deg);
+    -webkit-transform: rotate(40deg);
+    transition: .3s transform ease-in-out;
+  }
+  
+  
+  .collapse-list-item a.btn span {
+    transform: rotate(-140deg);
+    -webkit-transform: rotate(-140deg);
+    transition: .3s transform ease-in-out;
+  }
