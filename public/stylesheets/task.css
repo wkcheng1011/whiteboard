@@ -1,0 +1,30 @@
+.q-top{
+    color:white; 
+    width: 100%; 
+    /* background-image: linear-gradient(#e66465, #9198e5); */
+    z-index: -1;
+}
+
+.q-header{
+    border-radius: 20px 20px;
+    overflow: hidden;
+}
+
+.q-content{
+    box-shadow: 5px 10px 10px 10px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+    padding-top: 20px;
+    background-color:white;
+    margin-top: -60px;
+    border-radius: 20px 20px 0px 0px;
+}
+.bg-img{
+    width: 100%; margin-top: -160px; z-index: -1;
+}
+@media (min-width: 800px) {
+    .bg-img{
+        margin-top: 0px;
+        max-height: 500px;
+        object-fit:contain;
+    }
+}

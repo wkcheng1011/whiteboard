@@ -5,7 +5,7 @@
 
 <div class="jumbotron bg-info mb-0 text-white" style="padding-bottom: 70px;">
     <h4 class="">
-        <img class="mr-1" src="/images/students.png" style="width: 80px;">
+        <img class="mr-1 rounded-circle" src="/images/students.png" style="width: 80px; box-shadow:0 0 4px 0 #000">
         Hi! <%= session.user.name %></h4>
     <hr class="my-2">
     <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
@@ -67,7 +67,7 @@
                 <div class="collapse show" id="collapseFinished">
                     <% for (const attempt of attempts) { %>
                         <div class="list-group bs-callout bs-callout-finished p-0">
-                            <a href="/tasks/attempts/<%= attempt.attempt_id %>" class="list-group-item list-group-item-action">
+                            <a href="/tasks/attempt/<%= attempt.attempt_id %>" class="list-group-item list-group-item-action">
                               <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1"><%= attempt.name %></h5>
                                 <small class="time start"><%= attempt.at %></small>
@@ -77,7 +77,7 @@
                               %>
                               <p class="mb-1">Score <b class="<%= cl %>"><%= (attempt.answers.map(a => a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100 %>%
                                 </b></p>
-                              <small class="mb-1"><%= attempt.description %></small>
+                              <!-- <small class="mb-1"><%= attempt.description %></small> -->
                             </a>
                             
                         </div>

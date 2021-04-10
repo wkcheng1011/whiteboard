@@ -1,29 +1,52 @@
 <%- include('../_header'); %>
+<link rel="stylesheet" href="/stylesheets/task.css">
+<link rel="stylesheet" href="/stylesheets/checkbox.css">
+<script src="/scripts/task.js" ></script>
 
-<h1><%= taskMeta.name %></h1>
+<div class="card q-top" >
+    <!-- <img src="..." class="card-img-top" style="width: 100%; background-image: linear-gradient(#e66465, #9198e5);"> -->
+    <div class="card-body">
+        <h1 class="card-title">
+            <i class="fa fa-book"></i>
+            <%= taskMeta.name %>
+        </h1>
+        <div class="q-header bg-light">
+            <textarea><%= taskMeta.description %></textarea>
+        </div>
+        
+    </div>
+</div>
 
-<main>
-    <section>
-        <textarea><%= taskMeta.description %></textarea>
-    </section>
+<main class="q-content" >
     <section>
         <form method="post" id="form">
+            <% var i=1; %>
             <% for (const question of questions) { %>
                 <div class="form-group">
-                    <h5>
-                        <%= question.content %>
-                    </h5>
-                    <% for (const answer of question.answers) { %>
-                        <div class="form-check">
-                            <input type="radio" role="button" class="form-check-input" name="<%= question.id %>" id="<%= answer.id %>" required="required" value="<%= answer.id %>">
-                            <label class="form-check-label" for="<%= answer.id %>"><%= answer.content %></label>
-                        </div>
-                    <% } %>
+                    <div class="list-group list-group-flush">
+                        <h5 class="mb-1 alert alert-primary text-dark">
+                            <%= i %>.
+                            <%= question.content %>
+                            <i class="fa fa-question-circle"></i>
+                        </h5>
+                        <% for (const answer of question.answers) { %>
+                            <div class="form-check list-group-item list-group-item-action">
+                                <label class="cb-container form-check-label w-100" for="<%= answer.id %>"><%= answer.content %>
+                                    <input type="radio" role="button" class="form-check-input" name="<%= question.id %>" id="<%= answer.id %>" required="required" value="<%= answer.id %>">
+                                    <span class="checkmark"></span>
+                                </label>
+                                
+                                
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
-            <% } %>
+            <% i++ } %>
         </form>
-        <button class="btn btn-primary" type="submit" form="form">Submit</button>
-        <button class="btn btn-warning">Reset</button>
+        <button class="btn btn-primary w-100" type="submit" form="form">
+            <i class="fa fa-cloud-upload mr-1"></i></i>Submit</button>
+        <button class="btn btn-warning w-100 mt-3 mb-2">
+            <i class="fa fa-recycle mr-1"></i>Reset</button>
     </section>
 </main>
 

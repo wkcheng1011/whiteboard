@@ -8,10 +8,10 @@
     color: #222;
   }
   
-  a:hover,
+  /* a:hover,
   a:focus {
     color: orange;
-  }
+  } */
   
   .collapse-list-item span {
     border: solid #222;

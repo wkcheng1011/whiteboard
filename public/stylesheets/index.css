@@ -9,7 +9,16 @@
     margin: 5px;
     color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
+}
+
+.bg-img{
+    background-image: url('/images/bg1.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    
+}
 
 /*callout*/
 .bs-callout {

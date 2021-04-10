@@ -2,26 +2,40 @@
 <link rel="stylesheet" href="/stylesheets/chat.css">
 
 <main>
-    <a href="javascript:history.back()" role="button" class="btn btn-danger">Back</a>
-    <h1><%= messages[0].displayname %></h1>
-    <section id="message">
+    <div class="bg-dark text-light rounded shadow p-2 mt-0 ">
+        <%
+            var str = messages[0].displayname;
+            var img = str.includes("Student")? "fa-user":"fa-slideshare";
+        %>    
+        <h2><i class="fa <%= img %>"></i> <%= messages[0].displayname %></h2>
+    </div>
+    
+    <section  id="message">
         <% for (const message of messages) { %>
-            <div class="message w-50 mb-3 <%= message.from_id == session.user.id ? "out bg-primary text-light ml-auto" : "in bg-white mr-auto" %>">
-                <div class="author py-1 px-2"><%= message.user_name %></div>
+            <div class="author py-1 text-secondary <%= message.from_id == session.user.id ? "text-right" : "" %>">
+                <b><%= message.user_name %></b>
+            </div>
+            <div class="message mb-3 <%= message.from_id == session.user.id ? "out bg-primary text-light ml-auto" : "in bg-white mr-auto" %>">
                 <div class="content py-1 px-2"><%= message.content %></div>
                 <p class="small px-1 py-1 text-right"><%= message.at %></small>
             </div>
         <% } %>
     </section>
-    
-    <section id="form" class="mt-2">
+</main>
+
+<nav class="col-sm-12 mx-auto bg-dark inputer">
+    <section id="form">
         <form method="POST">
+            <button type="submit" role="button" class="btn btn-success float-right m-2" value="Send" >
+                <i class="fa fa-paper-plane"></i>
+            </button>
+            
+            
             <div class="form-group">
                 <textarea name="message" class="form-control" placeholder="Message..."></textarea>
             </div>
-            <input type="submit" role="button" class="btn btn-success" value="Send" />
+            
         </form>
-    </section>
-</main>
-
-<%- include("_footer"); %>
+    </section> 
+</nav>
+<!-- <%- include("_footer"); %> -->

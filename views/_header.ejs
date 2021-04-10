@@ -20,24 +20,27 @@
     
     <header class="sticky-top">
         <nav class="navbar navbar-dark navbar-expand-md bg-dark">
-            <div class="container-fluid"><a class="navbar-brand" href="/">Whiteboard</a>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown ml-auto">
-                        <a class="dropdown-toggle" aria-expanded="false" data-toggle="dropdown" href="#" style="color: var(--light);">
-                            <%= session.user.name %>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/login?logout">Logout</a>
-                        </div>
-                    </div>
-                    <div class="ml-3">
+            <div class="container-fluid">
+                <a id="bk-btn" class="ml-0" href="javascript:history.back()" role="button">
+                    <i class="fa fa-chevron-left text-white p-2"></i>
+                </a>
+                <a class="navbar-brand font-weight-bold" href="/">Whiteboard</a>
+                <div class="d-flex align-items-center header-icon">
+                    <div class="ml-auto">
                         <a href="/messages/">
-                            <i class="fa fa-inbox" style="font-size: 1.5em;"></i>
+                            <i class="fa fa-comments" style="font-size: 1.5em; color: white;"></i>
                         </a>
                         <% if (typeof badgeCount != "undefined") { %>
                             <span class="badge <%= badgeCount > 0 ? "badge-danger" : "badge-primary" %>">
                                 <%= badgeCount %>
                             </span>
+                        <% } %>
+                    </div>
+                    <div class="ml-3">
+                        <% if (typeof session.user != "undefined") { %>
+                            <a class="text-white" href="/myprofile/" >
+                                <i class="fa fa-user" style="font-size: 1.5em;"></i> <%= session.user.name %>
+                            </a>
                         <% } %>
                     </div>
                 </div>
