@@ -4,9 +4,10 @@
 <link rel="stylesheet" href="stylesheets/collapse-list.css">
 
 <div class="jumbotron bg-info mb-0 text-white" style="padding-bottom: 70px;">
-    <h4 class="">
+    <h4>
         <img class="mr-1 rounded-circle" src="/images/students.png" style="width: 80px; box-shadow:0 0 4px 0 #000">
-        Hi! <%= session.user.name %></h4>
+        Hi! <%= session.user.name %>
+    </h4>
     <hr class="my-2">
     <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
     <footer class="blockquote-footer text-right text-light"><cite><%= quote.author %></cite></footer>
@@ -14,7 +15,8 @@
 
 <div class="card card-content bg-light" style="margin-top: -60px;">
     <div id="accordion" class="card-body mt-2 text-secondary">
-        <h5>My Tasks
+        <h5>
+            My Tasks
             <button class="btn btn-light float-right pt-0" style="font-size: 20px;">🔍</button>
         </h5>
         <!--data header-->
@@ -22,7 +24,7 @@
             <div class="col rcorners" style="background-color: #6186db;">
                 <p class="mt-2 mb-0 p-0">All Tasks</p>
                 <p class="h3 m-0 p-0 font-weight-bold">
-                    <%= tasks.length+attempts.length %>
+                    <%= tasks.length + attempts.length %>
                 </p>
             </div>
             <div class="col rcorners" style="background-color: #8c8fd8;">
@@ -41,8 +43,7 @@
         <!--data table-->
         <div class="collapse-list mt-4">
             <div class="collapse-list-item px-0">
-                <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapsePending" role="button"
-                    aria-expanded="true" aria-controls="collapsePending">
+                <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapsePending" role="button" aria-expanded="true" aria-controls="collapsePending">
                     <h4 style="color:#8c8fd8;">Pending<span class="mr-4"></span></h4>
                 </a>
                 <hr class="mt-0" />
@@ -64,30 +65,27 @@
                                 <b class="mb-1 time end">
                                     <%= task.end %>
                                 </b>
-                                <a href="/messages/1/<%= task.class_id %>"
-                                    class="list-group-item list-group-item-action"><i class="fa fa-comment" style="font-size: 20px;"></i> Talk to <b><%= task.class_name %></b></a>
-                                    </b></a>
-                                    
+                                <a href="/messages/1/<%= task.class_id %>" class="list-group-item list-group-item-action">
+                                    <i class="fa fa-comment" style="font-size: 20px;"></i> 
+                                    Talk to <b><%= task.class_name %></b>
+                                </a>
                             </a>
-
                         </div>
-                        <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>
 
         <div class="collapse-list mt-4">
             <div class="collapse-list-item px-0">
-                <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapseFinished" role="button"
-                    aria-expanded="true" aria-controls="collapseFinished">
+                <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapseFinished" role="button" aria-expanded="true" aria-controls="collapseFinished">
                     <h4 style="color:#7bb0ae;">Finished<span class="mr-4"></span></h4>
                 </a>
                 <hr class="mt-0" />
                 <div class="collapse show" id="collapseFinished">
                     <% for (const attempt of attempts) { %>
                         <div class="list-group bs-callout bs-callout-finished p-0">
-                            <a href="/tasks/attempt/<%= attempt.attempt_id %>"
-                                class="list-group-item list-group-item-action">
+                            <a href="/tasks/attempt/<%= attempt.attempt_id %>" class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">
                                         <%= attempt.name %>
@@ -96,16 +94,15 @@
                                         <%= attempt.at %>
                                     </small>
                                 </div>
-                                <% var cl=((attempt.answers.map(a=> a.correct).reduce((a, b) => a + b) /
-                                    attempt.answers.length * 10000 | 0) / 100) >= 50? 'text-success':'text-danger';
-                                    %>
-                                    <p class="mb-1">Score <b class="<%= cl %>">
-                                            <%= (attempt.answers.map(a=> a.correct).reduce((a, b) => a + b) /
-                                                attempt.answers.length * 10000 | 0) / 100 %>%
-                                        </b></p>
+                                <% 
+                                    const score = (attempt.answers.map(a=> a.correct).reduce((a, b) => a + b) / attempt.answers.length * 10000 | 0) / 100;
+                                %> 
+                                <p class="mb-1">Score <b class="<%= score >= 50 ? 'text-success' : 'text-danger'; %>">
+                                    <b><%= score %>%</b>
+                                </p>
                             </a>
                         </div>
-                        <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>

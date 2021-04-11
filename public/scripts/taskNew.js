@@ -34,7 +34,9 @@ function addQuestion(first = false) {
 
     questionContainerClone.appendChild(actionClone);
     containers.appendChild(questionContainerClone);
-    containers.querySelector(`#${id} input`).focus();
+    if (!first) {
+        containers.querySelector(`#${id} input`).focus();
+    }
 }
 
 function addAnswer(questionElement, first = false) {

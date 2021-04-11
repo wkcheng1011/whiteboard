@@ -3,13 +3,12 @@
 <link rel="stylesheet" href="/stylesheets/index.css">
 <link rel="stylesheet" href="/stylesheets/collapse-list.css">
 
-
 <% 
-var passed=0;
-var failed=0;
-for (const task of tasks) { 
-    task.average >= 0.5 ? passed++ : failed++;
-} 
+    var passed=0;
+    var failed=0;
+    for (const task of tasks) { 
+        task.average >= 0.5 ? passed++ : failed++;
+    } 
 %>
 
 <div class="jumbotron mb-0 text-white" style="padding-bottom: 70px; background-color: #35dbba;">
@@ -54,9 +53,9 @@ for (const task of tasks) {
             <div class="collapse show" id="collapseTasks">
                 <% for (const task of tasks) { %>
                     <%
-                    var avg = (task.average * 10000 | 0) / 100;
-                    var cl = avg >= 50? 'success':'danger';
-                    var mk = avg >= 50? 'fa-check-circle': 'fa-info-circle';
+                        var avg = (task.average * 10000 | 0) / 100;
+                        var cl = avg >= 50? 'success':'danger';
+                        var mk = avg >= 50? 'fa-check-circle': 'fa-info-circle';
                     %>
                     <div class="list-group bs-callout bs-callout-<%= cl %> p-0">
                         <a href="/tasks/contents/<%= task.task_id %>" class="list-group-item list-group-item-action">
@@ -71,7 +70,8 @@ for (const task of tasks) {
                         <p class="h2 text-<%= cl %> float-right"><i class="fa <%= mk %>"></i> <%= avg %>%</p>
                         
                         <a href="/messages/1/<%= task.class_id %>" class="list-group-item list-group-item-action">
-                            <i class="fa fa-comment" style="font-size: 20px;"></i> Talk to <b><%= task.class_name %></b></a>
+                            <i class="fa fa-comment" style="font-size: 20px;"></i> Talk to <b><%= task.class_name %></b>
+                        </a>
                             
                         <a href="/tasks/summary/<%= task.id %>" class="list-group-item list-group-item-action text-primary">
                             <b><i class="fa fa-bar-chart" style="font-size: 20px;"></i> Summary</b>
@@ -80,12 +80,11 @@ for (const task of tasks) {
                         <a data-task-id="<%= task.id %>" class="list-group-item list-group-item-action text-danger deleteBtn">
                             <b><i class="fa fa-trash-o" style="font-size: 20px;"></i> Delete</b>
                         </a>
-                        </a>
-                        
                     </div>
                 <% } %>
             </div>
         </div>
     </div>
 </div>
+
 <%- include('../_footer'); %>
