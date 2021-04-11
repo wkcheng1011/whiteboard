@@ -15,8 +15,9 @@ main > #message {
     flex-shrink: 1;
     overflow: auto;
     background-color: rgb(255, 255, 255);
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 15px;
+    background-image: url(/images/msg-bg.jpg);
 }
 
 main > #form {
