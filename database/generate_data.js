@@ -166,7 +166,7 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 			const _uuid2 = uuid();
 			questions[_uuid2] = [];
 
-			await stmts.questions.run(_uuid2, _uuid, randomWords({min: 5, max: 10, join: ' '}));
+			await stmts.questions.run(_uuid2, _uuid, randomWords({min: 5, max: 10, join: ' '}) + "?");
 			console.log("question", {j, _uuid2, _uuid});
 
 			const answersSize = random(3, 5);
