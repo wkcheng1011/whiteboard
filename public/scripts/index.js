@@ -2,7 +2,6 @@ $(function() {
     $('#bk-btn').hide();
 });
 
-
 function nameSorter(a, b) {
     return a.replace(/href=.*"/, "").localeCompare(b.replace(/href=.*"/, ""));
 }
@@ -33,4 +32,14 @@ for (const time of times) {
         txt = "After " + (magnitude | 0) + unit;
     }
     time.textContent = txt;
+}
+
+for (const deleteBtn of document.querySelectorAll(".deleteBtn")) {
+    deleteBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const task_id = deleteBtn.dataset.taskId;
+        if (confirm("Are you sure to delete this task?")) {
+            window.location = "/task/delete/" + task_id;
+        }
+    });
 }
