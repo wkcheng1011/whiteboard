@@ -1,3 +1,8 @@
+$(function() {
+    $('#bk-btn').hide();
+});
+
+
 function nameSorter(a, b) {
     return a.replace(/href=.*"/, "").localeCompare(b.replace(/href=.*"/, ""));
 }

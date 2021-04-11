@@ -1,32 +1,58 @@
 <%- include('_header'); %>
+<link rel="stylesheet" href="/stylesheets/task.css">
+<link rel="stylesheet" href="/stylesheets/checkbox.css">
+<script src="/scripts/task.js" ></script>
 
-<h1><%= meta.task_name %></h1>
-<h4>Attempted at <%= meta.at %> by <%= meta.user_name %></h4>
+<div class="card q-top" >
+    <div class="card-body" >
+        <h1 class="card-title">
+            <i class="fa fa-book"></i>
+            <%= meta.task_name  %>
+            <br/>90/100
+        </h1>
+        <p>Attempted at <%= meta.at %> <br />by <%= meta.user_name %></p>
+        <div class="q-header bg-light">
+            <textarea><%= meta.description %></textarea>
+        </div>
+        
+    </div>
+</div>
 
-<main>
-    <section>
-        <textarea><%= meta.description %></textarea>
-    </section>
+<main class="q-content">
     <section>
         <form method="post" id="form">
+            <% var i=1; %>
             <% for (const question of questions) { %>
                 <div class="form-group">
-                    <h5>
-                        <%= question.content %>
-                    </h5>
-                    <% for (const answer of question.answers) { %>
-                        <div class="form-check">
-                            <input type="radio" role="button" class="form-check-input" name="<%= question.id %>" id="<%= answer.id %>" disabled="disabled" value="<%= answer.id %>"
-                            <%= answer.id == question.selected ? "checked" : "" %>>
-                            <label class="form-check-label" for="<%= answer.id %>"><%= answer.content %></label>
-                        </div>
-                    <% } %>
+                    <div class="list-group list-group-flush">
+                        <h5 class="mb-1 alert alert-primary text-dark">
+                            <%= i %>.
+                            <%= question.content %>
+                            <i class="fa fa-question-circle"></i>
+                        </h5>
+                        <% for (const answer of question.answers) { %>
+                            <div class="form-check list-group-item list-group-item-action mb-1" style="border-radius: 5px; background-color: rgb(198, 198, 198);">
+                                <label class="cb-container form-check-label w-100" for="<%= answer.id %>"><%= answer.content %>
+                                    <input type="radio" role="button" class="form-check-input" name="<%= question.id %>" id="<%= answer.id %>" disabled="disabled" value="<%= answer.id %>" <%= answer.id == question.selected ? "checked" : "" %>>
+                                    <span class="checkmark"></span>
+                                </label>
+                                
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
-            <% } %>
+            <% i++ } %>
         </form>
     </section>
 </main>
 
+<img class="bg-img" src="/images/bg1.png" >
+<div style="margin-top: -300px; text-shadow: 2px 2px 4px #000000">
+    <h2 class="text-white text-center">Add Oil My Friend
+        <footer class="blockquote-footer text-center text-light"><cite>William Chan</cite></footer>
+    </h2>
+    
+</div>
 <script>
     const simplemde = new SimpleMDE({
         status: false,

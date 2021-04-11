@@ -1,0 +1,40 @@
+<%- include('_header'); %>
+<script src="/scripts/index.js" defer></script>
+<link rel="stylesheet" href="/stylesheets/index.css">
+
+<%
+var str = session.user.name;
+var img = str.includes("Student")? "students.png":"teacher.png";
+var bg = str.includes("Student")? "bg-stu":"bg-tea";
+%>         
+
+<div class="jumbotron mb-0 text-white q-top shadow <%= bg %>" >
+    <h4>
+        <img class="mr-1 rounded-circle " src="/images/<%= img %>" style="width: 80px;  box-shadow:0 0 4px 4px #000">
+        Hi! <%= session.user.name %>
+    </h4>
+    <hr class="my-2 bg-white ">
+    <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
+    <footer class="blockquote-footer text-left text-light"><cite><%= quote.author %></cite></footer>
+</div>
+
+<div class="list-group list-group-flush mt-2 bg-secondry">
+    <a class="list-group-item list-group-item-action" href="whatsapp://send?text=Hello! Come and Join WhiteBoard! http://nasupc.ddns.net:3000/">
+        <i class="fa fa-whatsapp text-success" style="font-size: 20px;"></i>
+        Share to friends
+    </a>
+</div>
+<a class="btn btn-danger text-white col-sm-12 mt-2" href="/login?logout">
+    <i class="fa fa-power-off"></i> Logout
+</a>
+
+<div class="d-flex justify-content-center align-items-center mt-4">
+    <p class="text-secondary">from</p><br/>    
+    <img class="col-md-12" style="max-width: 100px;" src="/images/logo.png" >
+    <p class="text-secondary">v1.0.0</p>
+</div>
+
+
+
+
+<%- include("_footer"); %> 

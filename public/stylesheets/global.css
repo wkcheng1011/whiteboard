@@ -5,3 +5,38 @@ body {
 table {
     min-width: 500px;
 }
+
+.footer{
+    color: #EEE;
+    padding: 10px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+}
+
+@media (max-width: 700px) {
+    .footer {
+        visibility: visible;
+        padding-bottom: 30px;
+        border-top: 0.5px solid rgba(255, 255, 255, 0.454)
+    }
+    /* for iphone */
+    header{
+        padding-top: constant(safe-area-inset-top);
+        padding-top: 44px;
+    }
+    .header-icon{
+        visibility: hidden;
+    }
+}
+
+
+@media (min-width: 1080px) {
+    .footer {
+        visibility: hidden;
+    }
+    .header-icon{
+        visibility: visible;
+    }
+}

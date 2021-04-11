@@ -1,5 +1,8 @@
 .card-content{
     border-radius: 50px 50px 0px 0px;
+    box-shadow: 5px 10px 10px 10px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-color: #0d6dfd00;
+    padding: 10px;
 }
 
 .rcorners {
@@ -9,7 +12,31 @@
     margin: 5px;
     color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
+}
+
+.bg-img{
+    background-image: url('/images/bg1.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+.bg-stu{
+    background-image: url(/images/bg2.png);
+    background-position: right;
+    background-size: cover;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.241);
+}
+
+.bg-tea{
+    background-image: url(/images/bg4.png);
+    background-position: center;
+    background-size: contain;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.241);
+    
+}
+
 
 /*callout*/
 .bs-callout {
@@ -80,3 +107,5 @@
 .bs-callout-finished h5 {
     color: #7bb0ae;
 }
+
+

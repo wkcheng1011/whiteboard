@@ -1,27 +1,47 @@
-#login .container {
-	margin-top: 10%;
-	max-width: 500px;
+#login {
+	margin-top: 10px;
+	border-radius: 20px;
+	z-index: 1;
+	max-height: 1080px;
+	max-width: 550px;
+	
+	height: 550px;
+	background-color: #f7f7f7ea;
+	box-shadow: 5px 10px 10px 10px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	
+}
+.card-img{
+	border: 0px;
+	box-shadow: 5px 10px 10px 10px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	border-color: none;
+	padding-bottom: 100px;
+	background-color: #83aca6;
+}
+.login-btn{
+	background-color: #7bb0ae;
+	height: 44px;
 }
 
-#login .container .logo {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+.bottom-placeholder{
+	width: 100%;
+	height: 550px;
 }
 
-#login .container legend {
-	text-align: center;
-	font-size: 30px;
+@media (max-width: 700px) {
+	#login {
+		max-width: 500px;
+	}
+	.bottom-placeholder{
+		height: 350px;
+	}
 }
+/* @media (min-width: 701px) {
+	.login-bg{
+		object-fit: cover;
+	}
+} */
 
-#login .container button {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 170px;
-}
-
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
 	#login .container {
 		margin-top: 30%;
 	}
@@ -50,4 +70,8 @@
 		margin-right: auto;
 		width: 170px;
 	}
-}
+} */
+
+
+/**/
+

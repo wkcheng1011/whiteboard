@@ -15,7 +15,8 @@ const routes = {
 	"/": "index.js",
 	"/login": "login.js",
 	"/messages/": "message.js",
-	"/tasks/": "task.js"
+	"/tasks/": "task.js",
+	"/myprofile/": "myprofile.js"
 };
 
 // view engine setup

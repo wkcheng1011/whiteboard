@@ -1,34 +1,90 @@
 <%- include('../_header'); %>
+<link rel="stylesheet" href="/stylesheets/index.css">
+<link rel="stylesheet" href="/stylesheets/collapse-list.css">
 
-<section>
-    You have a total of x tasks.
-    <a href="/tasks/new" role="button" class="btn btn-success">New Task</a>
+
+<% 
+var passed=0;
+var failed=0;
+for (const task of tasks) { 
+    var avg = (task.average * 10000 | 0) / 100;
+    avg >= 50? passed++:failed++;
+} 
+%>
+
+<div class="jumbotron mb-0 text-white" style="padding-bottom: 70px; background-color: #35dbba;">
+    <h4 class="">
+        <img class="mr-1 rounded-circle" src="/images/teacher.png" style="width: 80px; box-shadow:0 0 4px 0 #000">
+        Hi! <%= session.user.name %></h4>
+    <hr class="my-2">
     
-    <div class="table-responsive table-striped thead-dark">
-        <table data-toggle="table" data-search="true" data-show-columns="true" data-virtual-scroll="true" class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="w-25" data-sortable="true">Name</th>
-                    <th class="w-25" data-sortable="true">Due Date</th>
-                    <th class="w-25" data-sortable="true">Average</th>
-                    <th class="w-25" data-sortable="true">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (const task of tasks) { %>
-                    <tr>
-                        <td><%= task.name %></td>
-                        <td><%= task.end %></td>
-                        <td><%= (task.average * 10000 | 0) / 100 %>%</td>
-                        <td>
-                            <a role="button" href="/tasks/summary/<%= task.id %>" class="btn btn-info">Summary</a>
-                            <a role="button" href="/tasks/delete/<%= task.id %>" class="btn btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</section>
+</div>
+<div class="card card-content bg-light" style="margin-top: -60px;">
+    <div id="accordion" class="card-body text-secondary mt-3 pt-0">
+        <h3>Tasks </h3>
+        <!--data header-->
+        <div class="row content-header">
+            <div class="col-sm-3 col-md-3 rcorners" style="background-color: #6186db;">
+                <p class="mt-2 mb-0 p-0">All Tasks</p>
+                <p class="h3 m-0 p-0 font-weight-bold"><%= tasks.length %></p>
+            </div>
+            <div class="col-sm-3 col-md-3 rcorners" style="background-color: #7bb0ae;">
+                <p class="mt-2 mb-0 p-0">Avg. Passed</p>
+                <p class="h3 m-0 p-0 font-weight-bold"><%= passed %></p>
+            </div>
 
+            <div class="col-sm-6 col-md-3 rcorners" style="background-color: #e6176a;">
+                <p class="mt-2 mb-0 p-0">Avg. Failed</p>
+                <p class="h3 m-0 p-0 font-weight-bold"><%= failed %></p>
+            </div>
+
+        </div>
+        <a href="/tasks/new" role="button" class="btn btn-info mt-3 col-sm-12 col-md-3 shadow" style="border-radius: 10px;">
+            <b><i class="fa fa-file-text"></i> New Task</b>
+        </a>
+    </div>
+
+    <div class="collapse-list mt-1">
+        <div class="collapse-list-item px-0">
+            <a class="btn btn-block text-left p-0" data-toggle="collapse" href="#collapseTasks" role="button" aria-expanded="true" aria-controls="collapseTasks">
+                <h4 style="color:#8c8fd8;">Task Detail<span class="mr-4"></span></h4>
+            </a>
+            <hr class="mt-0" />
+            <div class="collapse show" id="collapseTasks">
+                <% for (const task of tasks) { %>
+                    <%
+                    var avg = (task.average * 10000 | 0) / 100;
+                    var cl = avg >= 50? 'success':'danger';
+                    var mk = avg >= 50? 'fa-check-circle': 'fa-info-circle';
+                    %>
+                    <div class="list-group bs-callout bs-callout-<%= cl %> p-0">
+                        <a href="/tasks/contents/<%= task.task_id %>" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1"><%= task.name %></h5>
+                            <small class="time start text-right"><%= task.start %></small>
+                        </div>
+                        <p class="mb-0 mt-1" style="font-size: 12px;">Due Day</p>
+                        <b class="mb-1 time end"><%= task.end %></b><br/>
+
+                        <p class="mt-1 mb-0 float-right" style="font-size: 12px;">Average </p><br/>
+                        <p class="h2 text-<%= cl %> float-right"><i class="fa <%= mk %>"></i> <%= avg %>%</p>
+                        <!-- add class name here -->
+                        <a href="/messages/1/<%= task.class_id %>" class="list-group-item list-group-item-action">
+                            <i class="fa fa-comment" style="font-size: 20px;"></i> Talk to <b>class</b></a>
+                            
+                        <a href="/tasks/summary/<%= task.id %>" class="list-group-item list-group-item-action text-primary">
+                            <b><i class="fa fa-bar-chart" style="font-size: 20px;"></i>Summary</b>
+                        </a>
+                        
+                        <a href="/tasks/delete/<%= task.id %>" class="list-group-item list-group-item-action text-danger">
+                            <b><i class="fa fa-trash-o" style="font-size: 20px;"></i> Delete</b>
+                        </a>
+                        </a>
+                        
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
 <%- include('../_footer'); %>
