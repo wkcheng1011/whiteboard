@@ -14,3 +14,10 @@ const simplemde = new SimpleMDE({
     toolbarTips: false
 });
 simplemde.togglePreview();
+
+const resetBtn = document.getElementById("resetBtn");
+resetBtn.addEventListener("click", () => {
+    for (const radio of document.querySelectorAll("input[type=radio]")) {
+        radio.checked = false;
+    }
+});
