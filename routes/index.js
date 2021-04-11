@@ -25,8 +25,13 @@ router.get("/", async (req, res) => {
 			
 			return res.render("students/index", { quote, tasks, attempts, badgeCount: messages.length });
 		} else {
-			//const tasks = await db.all("")
-			return res.render("teachers/index", { quote, badgeCount: messages.length });
+			const tasks = await db.all("select classes.name as class_name, * from classes, tasks where tasks.class_id = classes.id");
+			for (const task of tasks) {
+				const attemptAnswers = await db.all("select * from answers, attemptAnswers where attemptAnswers.answer_id = answers.id and attemptAnswers.attempt_id in (select id from attempts where task_id = ?)", task.id);
+				task.average = attemptAnswers.filter(a => a.correct).length / attemptAnswers.length;
+			}
+
+			return res.render("teachers/index", { quote, tasks, badgeCount: messages.length });
 		}
 	}
 });
