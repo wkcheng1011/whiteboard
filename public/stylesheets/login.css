@@ -1,52 +1,45 @@
 #login {
-	margin-top: -150px;
-	max-width: 500px;
-	width: 300px;
-	height: 400px;
+	margin-top: 10px;
 	border-radius: 20px;
-	z-index: 999;
-	max-height: 800px;
-	/* background-color: #7bb0ae; */
+	z-index: 1;
+	max-height: 1080px;
+	max-width: 550px;
+	
+	height: 550px;
+	background-color: #f7f7f7ea;
+	box-shadow: 5px 10px 10px 10px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	
+}
+.card-img{
+	border: 0px;
+	box-shadow: 5px 10px 10px 10px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	border-color: none;
+	padding-bottom: 100px;
+	background-color: #83aca6;
 }
 .login-btn{
 	background-color: #7bb0ae;
 	height: 44px;
 }
-.login-bg{
-	position: relative;
-	
-	/* margin-left: 100px; */
-	/* height: 200px; */
-	width: 50%;
-	z-index: -999;
-	margin: auto;
-	margin-top: -20px;
-	object-fit: contain;
-	overflow: hidden;
+
+.bottom-placeholder{
+	width: 100%;
+	height: 550px;
 }
 
 @media (max-width: 700px) {
 	#login {
-		margin-top: -150px;
 		max-width: 500px;
 	}
-	.login-bg{
-		width: 100vw;
-		position: relative;
-		left: 50%;
-		right: 50%;
-		margin-top: -20px;
-		margin-left: -50vw;
-		margin-right: -50vw;
-		/* visibility: visible; */
-		/* object-fit: cover;; */
+	.bottom-placeholder{
+		height: 350px;
 	}
 }
-@media (min-width: 701px) {
+/* @media (min-width: 701px) {
 	.login-bg{
 		object-fit: cover;
 	}
-}
+} */
 
 /* @media (max-width: 576px) {
 	#login .container {

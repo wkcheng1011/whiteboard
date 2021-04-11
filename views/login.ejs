@@ -5,40 +5,45 @@ $(function() {
     $('#bk-btn').hide();
 });
 </script>
-<div class="login-bg">
-    <img class="img-fluid rounded " src="/images/bg3.png" >
-</div>
 
-<div id="login" class="shadow-lg mx-auto">
-    <div class="container">			
-        <form method="POST">
-            <div class="d-flex justify-content-center align-items-center mt-4">
-                <img class="col-md-12" style="max-width: 150px;" src="/images/logo.png" >
+<div class="card">
+    <img src="/images/bg3.png" class="card-img">
+    <div class="card-img-overlay">
+        <div id="login" class="mx-auto">
+            <div class="container">			
+                <form method="POST">
+                    <div class="d-flex justify-content-center align-items-center mt-4">
+                        <img class="col-md-12" style="max-width: 150px;" src="/images/logo.png" >
+                    </div>
+                    <% if (failed) { %>
+                        <div class="alert alert-danger m-2" role="alert">
+                            <i class="fa fa-info-circle"></i>
+                            <b>Login failed!</b>
+                            <br/>
+                            Please input the correct Password and User name.
+                          </div>
+                    <% } %>		
+                    <div class="mb-3">
+                        <input type="text" class="form-control rounded shadow" name="username" placeholder="User ID" <% if (locals.dbg) { %>
+                            value="student1"
+                        <% } %>/>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control rounded shadow" name="password" placeholder="Password" <% if (locals.dbg) { %>
+                            value="student1"
+                        <% } %>/>
+                    </div>
+                    <button type="submit" class="btn btn-info col-sm-12 login-btn shadow"><i class="fa fa-space-shuttle"></i> 
+                        SIGN IN</button>
+                </form>
+                <p class="mt-4 text-muted w-100 text-center">Whiteboard© 2021</p>
             </div>
-            <% if (failed) { %>
-                <div class="alert alert-danger m-2" role="alert">
-                    <i class="fa fa-info-circle"></i>
-                    <b>Login failed!</b>
-                    <br/>
-                    Please input the correct Password and User name.
-                  </div>
-            <% } %>		
-            <div class="mb-3">
-                <input type="text" class="form-control rounded shadow" name="username" placeholder="User ID" <% if (locals.dbg) { %>
-                    value="student1"
-                <% } %>/>
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control rounded shadow" name="password" placeholder="Password" <% if (locals.dbg) { %>
-                    value="student1"
-                <% } %>/>
-            </div>
-            <button type="submit" class="btn btn-info col-sm-12 login-btn shadow"><i class="fa fa-space-shuttle"></i> 
-                SIGN IN</button>
-        </form>
-        <p class="mt-5 mb-3 text-muted w-100 text-center">Whiteboard© 2021</p>
+        </div>
     </div>
-    
-</div>
+  </div>
+  
+
+
+<div class="bottom-placeholder"> </div>
 
 <!-- <%- include('_footer'); %> -->

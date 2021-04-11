@@ -19,7 +19,7 @@
                         var str = message.name;
                         var img = str.includes("Student")? "students.png":"class.png";
                     %>               
-                    <img class="ml-0 rounded-circle bg-secondary" src="/images/<%= img%>" style="width:60px">
+                    <img class="ml-0 rounded-circle bg-secondary" src="/images/<%= img%>" style="width:60px; height: 60px;">
                     <h5 class="mb-1 col-sm-3" style="font-size: 16px; font-weight: bold;">
                         <%= message.name %><br/>
                         <span class="badge badge-secondary badge-pill"><%= message.cnt %></span>
