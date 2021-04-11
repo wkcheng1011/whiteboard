@@ -7,3 +7,10 @@ const c2 = `hsl(${(h + 120) % 360}, ${s}, ${l})`;
 
 const c = `linear-gradient(${c1}, ${c2})`;
 $(".q-top").css("background-image", c);
+
+const simplemde = new SimpleMDE({
+    status: false,
+    toolbar: false,
+    toolbarTips: false
+});
+simplemde.togglePreview();
