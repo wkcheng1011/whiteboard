@@ -1,43 +1,57 @@
 <%- include('../_header'); %>
 <script src="/scripts/taskNew.js" defer></script>
+<link rel="stylesheet" href="/stylesheets/index.css">
 
-<section>
+<section class="mb-4">
+
     <form method="POST">
-        <div class="input-group input-group-lg">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Title</span>
+        <div class="rcorners p-2 p-4 ml-0" style="background-color: #54938c; width: 100%; height: auto;">
+            <p class="h1 mb-0 p-0"> <i class="fa fa-file-text"></i> New Task</p>
+            <div class="input-group shadow mt-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-text-width pr-1"></i>  Task Title</span>
+                </div>
+                <input type="text" class="form-control" name="title" placeholder="Task title..." required>
+    
             </div>
-            <input type="text" class="form-control" name="title" required>
-            <select class="form-control" name="class" required>
-                <% for (const _class of classes) { %>
-                    <option value="<%= _class.id %>"><%= _class.name %></option>
-                <% } %>
-            </select>
-            <div class="input-group-append">
-                <span class="input-group-text">Class</span>
+            <div class="input-group mt-1 shadow">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-crosshairs pr-1"></i> Class</span>
+                </div>
+                <select class="form-control" name="class" required>
+                    <% for (const _class of classes) { %>
+                        <option value="<%= _class.id %>"><%= _class.name %></option>
+                    <% } %>
+                </select>
+    
+            </div>
+        
+            <div class="input-group mt-1 shadow">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar-check-o pr-1"></i> Start</span>
+                </div>
+                <input type="datetime-local" class="form-control" name="start" id="start" required>
+            </div>
+            <div class="input-group mt-1 shadow">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar-times-o pr-1"></i> End</span>
+                </div>
+                <input type="datetime-local" class="form-control" name="end" id="end" required>
+ 
             </div>
         </div>
-    
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Start</span>
-            </div>
-            <input type="datetime-local" class="form-control" name="start" id="start" required>
-            <input type="datetime-local" class="form-control" name="end" id="end" required>
-            <div class="input-group-append">
-                <span class="input-group-text">End</span>
-            </div>
+        <div class="rcorners p-2 p-4 ml-0 mt-3" style="background-color: #54938c00; width: 100%; height: auto;">
+            <h1 class="h1 mb-0 p-0 mb-2 text-secondary"> <i class="fa fa-stack-exchange"></i> Description</h1>
+            <textarea name="description"></textarea>
         </div>
         
-        <h1>Description</h1>
-        <textarea name="description"></textarea>
-    
-        <h1>Questions</h1>
-        <div id="questionContainers">
-            
+        <div class="rcorners p-2 p-4 ml-0 mt-3" style="background-color: #2778bfa1; width: 100%; height: auto;">
+            <h1 class="h1 mb-0 p-0 mb-2"> <i class="fa fa-question-circle"></i> Questions</h1>
+            <div id="questionContainers"></div>    
         </div>
-        <input type="submit" class="btn btn-success" value="Submit"></button>
+        <input type="submit" class="btn btn-success btn-lg col-sm-12 mt-3 shadow" value="Submit"></button>
     </form>
+
 </section>
 
 <template id="questionContainerTemp">
@@ -55,11 +69,11 @@
         </div>
         <input type="text" class="form-control" placeholder="Answer" required>
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary removeABtn" type="button">
-                <i class="fa fa-remove"></i>
+            <button class="btn btn-danger removeABtn" type="button">
+                <i class="fa fa-trash"></i>
             </button>
-            <button class="btn btn-outline-secondary addABtn" type="button">
-                <i class="fa fa-plus"></i>
+            <button class="btn btn-info addABtn" type="button">
+                <i class="fa fa-plus-circle"></i>
             </button>
         </div>
     </div>
@@ -67,12 +81,12 @@
 
 <template id="actionTemp">
     <div class="d-flex">
-        <button class="btn btn-danger col removeQBtn">
-            <i class="fa fa-remove"></i>
+        <button class="btn btn-danger col removeQBtn mt-2">
+            <i class="fa fa-trash"></i> Q
         </button>
-        <button class="btn btn-primary col addQBtn">
-            <i class="fa fa-plus"></i>
+        <button class="btn btn-primary col addQBtn mt-2">
+            <i class="fa fa-plus-circle"></i> 
         </button>
     </div>
 </template>
-<%- include('../_footer'); %>
+<!-- <%- include('../_footer'); %> -->

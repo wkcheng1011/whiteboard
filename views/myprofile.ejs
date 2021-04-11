@@ -2,14 +2,20 @@
 <script src="/scripts/index.js" defer></script>
 <link rel="stylesheet" href="/stylesheets/index.css">
 
-<div class="jumbotron mb-0 text-white q-top shadow" style="background-image: url(/images/bg2.png); text-shadow: 0.2em 0.5em 0.1em #000, -0.3em 0.1em 0.1em rgb(179, 179, 179)">
+<%
+var str = session.user.name;
+var img = str.includes("Student")? "students.png":"teacher.png";
+var bg = str.includes("Student")? "bg-stu":"bg-tea";
+%>         
+
+<div class="jumbotron mb-0 text-white q-top shadow <%= bg %>" >
     <h4>
-        <img class="mr-1 rounded-circle " src="/images/students.png" style="width: 80px;  box-shadow:0 0 4px 4px #000">
+        <img class="mr-1 rounded-circle " src="/images/<%= img %>" style="width: 80px;  box-shadow:0 0 4px 4px #000">
         Hi! <%= session.user.name %>
     </h4>
     <hr class="my-2 bg-white ">
     <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
-    <footer class="blockquote-footer text-right text-light"><cite><%= quote.author %></cite></footer>
+    <footer class="blockquote-footer text-left text-light"><cite><%= quote.author %></cite></footer>
 </div>
 
 <div class="list-group list-group-flush mt-2 bg-secondry">
