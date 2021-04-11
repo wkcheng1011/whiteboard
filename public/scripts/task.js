@@ -1,9 +1,9 @@
-$(function() {
+const h = (Math.random() * 360) | 0;
+const s = "95%";
+const l = "35%";
 
-    let rn_color1 = '#' + (Math.floor(Math.random()*16777215)&0xFFFFFF).toString(16);
-    let rn_color2 = '#' + (Math.floor(Math.random()*16777215)&0xFFFFFF).toString(16);
-    let cl = 'linear-gradient('+rn_color1+','+rn_color2+')';
-    // background-image: linear-gradient(#e66465, #9198e5);
-    $('.q-top').css('background-image', cl);
-    
-});
+const c1 = `hsl(${h}, ${s}, ${l})`;
+const c2 = `hsl(${(h + 120) % 360}, ${s}, ${l})`;
+
+const c = `linear-gradient(${c1}, ${c2})`;
+$(".q-top").css("background-image", c);
