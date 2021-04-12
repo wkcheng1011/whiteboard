@@ -163,7 +163,7 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 		const questions = {};
 		for (let j = 0; j < random(5, 10); j++) {
 			const _uuid2 = uuid();
-			questions[_uuid2] = [];
+			questions[_uuid2] = {};
 
 			await stmts.questions.run(_uuid2, _uuid, randomWords({min: 5, max: 10, join: ' '}) + "?");
 			console.log("question", {j, _uuid2, _uuid});
@@ -173,23 +173,23 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 
 			for (let k = 0; k < answersSize; k++) {
 				const _uuid3 = uuid();
-				questions[_uuid2].push(_uuid3);
+				questions[_uuid2][_uuid3] = correct == k;
 				await stmts.answers.run(_uuid3, _uuid2, correct == k ? "Correct" : "Incorrect", correct == k);
 				console.log("answer", { k, _uuid3, _uuid2, correct: correct == k });
 			}
 		}
 
 		for (const student of students) {
-			if (random(0, 10) % 2 == 0) {
+			if (random(0, 10) > 7) {
 				const _uuid4 = uuid();
 				await stmts.attempts.run(_uuid4, _uuid, student);
 				console.log("attempt", {_uuid4, _uuid, student});
 				for (const question in questions) {
 					const answers = questions[question];
-					const answer = random(0, answers.length);
+					const answer = random(0, 3) == 0 ? Object.values(answers).indexOf(true) : random(0, Object.keys(answers).length);
 
-					await stmts.attemptAnswers.run(_uuid4, answers[answer]);
-					console.log("attemptAnswer", {_uuid4, question, ans: answers[answer]});
+					await stmts.attemptAnswers.run(_uuid4, Object.keys(answers)[answer]);
+					console.log("attemptAnswer", {_uuid4, question, ans: Object.keys(answers)[answer]});
 				}
 			}
 		}
