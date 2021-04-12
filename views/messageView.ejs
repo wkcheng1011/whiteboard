@@ -11,7 +11,7 @@
         <h2><i class="fa <%= img %>"></i> <%= messages[0].displayname %></h2>
     </div>
     
-    <section  id="message">
+    <section id="message">
         <% for (const message of messages) { %>
             <div class="message mb-3 <%= message.from_id == session.user.id ? "out bg-primary text-light ml-auto" : "in bg-white mr-auto" %>">
                 <div class="author px-2">
@@ -31,9 +31,8 @@
                 <i class="fa fa-paper-plane"></i>
             </button>
             
-            
             <div class="form-group">
-                <textarea name="message" class="form-control" placeholder="Message..."></textarea>
+                <textarea name="message" required class="form-control" placeholder="Message..."></textarea>
             </div>
             
         </form>
