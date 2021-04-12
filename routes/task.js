@@ -26,7 +26,7 @@ router.get(/\/attempt\/(.{36})/, async (req, res) => {
 			return res.render("error", { message: "Not a valid UUID", error: id });
 		}
 
-		const meta = await db.get("select users.name as user_name, tasks.name as task_name, * from attempts, tasks, users where attempts.id = ? and attempts.task_id = tasks.id and attempts.user_id = users.id", id);
+		const meta = await db.get("select users.name as user_name, tasks.name as task_name, attempts.id as attempt_id, classes.name as class_name, * from attempts, tasks, users, classes where attempts.id = ? and attempts.task_id = tasks.id and attempts.user_id = users.id and tasks.class_id = classes.id", id);
 
 		const questions = shuffle(await db.all("select * from questions where task_id = (select task_id from attempts where id = ?)", id));
 		for (const question of questions) {
@@ -37,11 +37,13 @@ router.get(/\/attempt\/(.{36})/, async (req, res) => {
 			question.selected = selectedAnswer.answer_id;
 		}
 
+		const answers = await db.all("select correct from attemptAnswers, answers where attempt_id = ? and attemptAnswers.answer_id = answers.id", meta.attempt_id);
+
 		if (!meta) {
 			return res.render("error", { message: "Not a valid task", error: id });
 		}
 
-		return res.render("taskAttempt", { meta, questions });
+		return res.render("taskAttempt", { meta, questions, answers});
 	}
 });
 

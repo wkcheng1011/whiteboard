@@ -8,9 +8,10 @@
         <h1 class="card-title">
             <i class="fa fa-book"></i>
             <%= meta.task_name  %>
-            <br/>90/100
+            <br/>
+            <%= (answers.map(a=> a.correct).reduce((a, b) => a + b) / answers.length * 10000 | 0) / 100 %>/100
         </h1>
-        <p>Attempted at <%= meta.at %> <br />by <%= meta.user_name %></p>
+        <p>Attempted at <%= meta.at %> <br />by <%= meta.user_name %> in <%= meta.class_name %></p>
         <div class="q-header bg-light">
             <textarea><%= meta.description %></textarea>
         </div>
