@@ -123,4 +123,27 @@ router.get(/\/(\d)\/(.{36})/, async (req, res) => {
 		return res.render("messageView", { messages });
 	}
 });
+
+router.post(/\/(\d)\/(.{36})/, async (req, res) => {
+	if (!req.session.user) {
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
+	} else {
+		db = res.locals.db;
+		const [type, id] = [req.params[0], req.params[1]];
+
+		if ([0, 1].indexOf(type) == 1) {
+			return res.render("error", { message: "Not a valid type", error: type });
+		}
+
+		if (!validator.isUUID(id)) {
+			return res.render("error", { message: "Not a valid UUID", error: id });
+		}
+
+		const _uuid = uuid();
+		await db.run("insert into messages (id, from_id, to_id, type, content) values (?, ?, ?, ?, ?)", _uuid, req.session.user.id, id, type, req.body.message);
+
+		return res.redirect(req.originalUrl);
+	}
+});
 module.exports = router;
