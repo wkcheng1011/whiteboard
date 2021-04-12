@@ -1,7 +1,7 @@
 <%- include('_header'); %>
 <link rel="stylesheet" href="/stylesheets/task.css">
 <link rel="stylesheet" href="/stylesheets/checkbox.css">
-<script src="/scripts/task.js" ></script>
+<script src="/scripts/task.js" defer></script>
 
 <div class="card q-top" >
     <div class="card-body" >
@@ -53,13 +53,5 @@
     </h2>
     
 </div>
-<script>
-    const simplemde = new SimpleMDE({
-        status: false,
-        toolbar: false,
-        toolbarTips: false
-    });
-    simplemde.togglePreview();
-</script>
 
 <%- include("_footer"); %>
