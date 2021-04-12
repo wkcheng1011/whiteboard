@@ -94,7 +94,7 @@ router.get(/\/(\d)\/(.{36})/, async (req, res) => {
 		db = res.locals.db;
 		const [type, id] = [req.params[0], req.params[1]];
 
-		if ([0, 1].indexOf(type) == 1) {
+		if ([0, 1].indexOf(type-0) == -1) {
 			return res.render("error", { message: "Not a valid type", error: type });
 		}
 
@@ -132,7 +132,7 @@ router.post(/\/(\d)\/(.{36})/, async (req, res) => {
 		db = res.locals.db;
 		const [type, id] = [req.params[0], req.params[1]];
 
-		if ([0, 1].indexOf(type) == 1) {
+		if ([0, 1].indexOf(type-0) == -1) {
 			return res.render("error", { message: "Not a valid type", error: type });
 		}
 
