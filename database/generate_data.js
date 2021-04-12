@@ -109,10 +109,9 @@ async function main() {
 			const _uuid = uuid();
 			messages.push(_uuid);
 			const from = random(0, users.length);
-			let at = random(-3600, 3600);
-			at = (at > 0 ? "+" : "") + at;
+			let at = random(-3600, 0);
 
-			await stmts.messages.run(_uuid, users[from], _class, 1, `${at} second`, randomWords({min: 5, max: 20, join: ' '}));
+			await stmts.messages.run(_uuid, users[from], _class, 1, `${at} second`, randomWords({min: 5, max: 20, join: ' '}) + ["!", "?", "."][random(0, 3)]);
 			console.log("messages", { i, _uuid, from: from, _class });
 		}
 	}
@@ -181,7 +180,7 @@ This is content. ${randomWords({min: 20, max: 100, join: ' '})}
 		}
 
 		for (const student of students) {
-			if (random(0, 10) % 3 == 0) {
+			if (random(0, 10) % 2 == 0) {
 				const _uuid4 = uuid();
 				await stmts.attempts.run(_uuid4, _uuid, student);
 				console.log("attempt", {_uuid4, _uuid, student});
