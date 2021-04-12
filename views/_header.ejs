@@ -28,9 +28,11 @@
                 <a class="navbar-brand font-weight-bold" href="/">Whiteboard</a>
                 <div class="d-flex align-items-center header-icon">
                     <div class="ml-auto">
-                        <a href="/messages/">
-                            <i class="fa fa-comments" style="font-size: 1.5em; color: white;"></i>
-                        </a>
+                        <% if (typeof session.user != "undefined") { %>
+                            <a href="/messages/">
+                                <i class="fa fa-comments" style="font-size: 1.5em; color: white;"></i>
+                            </a>
+                        <% } %>
                         <% if (typeof badgeCount != "undefined") { %>
                             <span class="badge <%= badgeCount > 0 ? "badge-danger" : "badge-primary" %>">
                                 <%= badgeCount %>
