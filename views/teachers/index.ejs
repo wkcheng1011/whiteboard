@@ -58,28 +58,29 @@
                         var mk = avg >= 50? 'fa-check-circle': 'fa-info-circle';
                     %>
                     <div class="list-group bs-callout bs-callout-<%= cl %> p-0">
-                        <a href="/tasks/contents/<%= task.task_id %>" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1"><%= task.name %></h5>
-                            <small class="time start text-right"><%= task.start %></small>
-                        </div>
-                        <p class="mb-0 mt-1" style="font-size: 12px;">Due Day</p>
-                        <b class="mb-1 time end"><%= task.end %></b><br/>
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><%= task.name %></h5>
+                                <small class="time start text-right"><%= task.start %></small>
+                            </div>
+                            <p class="mb-0 mt-1" style="font-size: 12px;">Due Day</p>
+                            <b class="mb-1 time end"><%= task.end %></b><br/>
 
-                        <p class="mt-1 mb-0 float-right" style="font-size: 12px;">Average </p><br/>
-                        <p class="h2 text-<%= cl %> float-right"><i class="fa <%= mk %>"></i> <%= avg %>%</p>
-                        
-                        <a href="/messages/1/<%= task.class_id %>" class="list-group-item list-group-item-action">
-                            <i class="fa fa-comment" style="font-size: 20px;"></i> Talk to <b><%= task.class_name %></b>
-                        </a>
+                            <p class="mt-1 mb-0 float-right" style="font-size: 12px;">Average </p><br/>
+                            <p class="h2 text-<%= cl %> float-right"><i class="fa <%= mk %>"></i> <%= avg %>%</p>
                             
-                        <a href="/tasks/summary/<%= task.id %>" class="list-group-item list-group-item-action text-primary">
-                            <b><i class="fa fa-bar-chart" style="font-size: 20px;"></i> Summary</b>
-                        </a>
-                        
-                        <a data-task-id="<%= task.id %>" class="list-group-item list-group-item-action text-danger deleteBtn">
-                            <b><i class="fa fa-trash-o" style="font-size: 20px;"></i> Delete</b>
-                        </a>
+                            <a href="/messages/1/<%= task.class_id %>" class="list-group-item list-group-item-action">
+                                <i class="fa fa-comment" style="font-size: 20px;"></i> Talk to <b><%= task.class_name %></b>
+                            </a>
+                                
+                            <a href="/tasks/summary/<%= task.id %>" class="list-group-item list-group-item-action text-primary">
+                                <b><i class="fa fa-bar-chart" style="font-size: 20px;"></i> Summary</b>
+                            </a>
+                            
+                            <a data-task-id="<%= task.id %>" class="list-group-item list-group-item-action text-danger deleteBtn">
+                                <b><i class="fa fa-trash-o" style="font-size: 20px;"></i> Delete</b>
+                            </a>
+                        </div>
                     </div>
                 <% } %>
             </div>
