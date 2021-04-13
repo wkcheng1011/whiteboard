@@ -106,6 +106,26 @@ router.post(/\/contents\/(.{36})/, async (req, res) => {
 	}
 });
 
+router.get(/\/summary\/(.{36})/, async (req, res) => {
+	if (!req.session.user) {
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
+	} else {
+        db = res.locals.db;
+
+		const id = req.params[0];
+
+		if (!validator.isUUID(id)) {
+			return res.render("error", { message: "Not a valid UUID", error: id });
+		}
+		
+		const task = await db.get("select * from tasks where id = ?", id);
+		const attempts = await db.all("select sum(correct) as s, count(*) as c, attempts.id as attempt_id, users.id as user_id, * from attempts, users, attemptAnswers, answers where task_id = ? and user_id = users.id and attempts.id = attemptAnswers.attempt_id and attemptAnswers.answer_id = answers.id group by attempts.user_id", id);
+
+		return res.render("teachers/taskSummary", { task, attempts });
+	}
+});
+
 router.get("/", async (req, res) => {
 	if (!req.session.user) {
 		req.session.redirect = req.originalUrl;

@@ -1,0 +1,32 @@
+<%- include('../_header'); %>
+
+<section>
+    Task statistics for <%= task.name %>
+    <table data-toggle="table" data-search="true" data-show-columns="true">
+        <thead>
+            <th class="w-25">Student Name</th>
+            <th class="w-25">Date</th>
+            <th class="w-25">Mark</th>
+            <th class="w-25">Action</th>
+        </thead>
+        <tbody>
+            <% for (const attempt of attempts) { %>
+                <tr>
+                    <td><%= attempt.name %></td>
+                    <td><%= attempt.at %></td>
+                    <td><%= (attempt.s * 10000 | 0) / attempt.c / 100 %>%</td>
+                    <td>
+                        <a role="button" class="btn btn-info" href="/tasks/attempt/<%= attempt.attempt_id %>">
+                            View
+                        </a>
+                        <a role="button" class="btn btn-warning" href="/messages/0/<%= attempt.user_id %>">
+                            Chat
+                        </a>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</section>
+
+<%- include('../_footer'); %>
