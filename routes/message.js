@@ -96,10 +96,13 @@ router.get(/\/(\d)\/(.{36})/, async (req, res) => {
 			return res.render("error", { message: "Not a valid UUID", error: id });
 		}
 
-		let messages;
+		
+		let messages, displayname;
 		if (type == 0) { // DM
-			messages = await db.all("select users.name as displayname, * from messages, users where (from_id = ? and to_id = ? or from_id = ? and to_id = ?) and from_id = users.id", id, req.session.user.id, req.session.user.id, id);
+			displayname = (await db.get("select name from users where id = ?", id)).name;
+			messages = await db.all("select * from messages, users where (from_id = ? and to_id = ? or from_id = ? and to_id = ?) and from_id = users.id", id, req.session.user.id, req.session.user.id, id);
 		} else { // GM
+			displayname = (await db.get("select name from classes where id = ?", id)).name;
 			messages = await db.all("select classes.name as displayname, users.name as user_name, * from messages, classes, users where to_id = ? and to_id = classes.id and from_id = users.id", id);
 		}
 
@@ -107,14 +110,7 @@ router.get(/\/(\d)\/(.{36})/, async (req, res) => {
 			return new Date(m1.at) - new Date(m2.at);
 		});
 
-		if (messages.length == 0) {
-			return res.render("error", {
-				message: "No messages",
-				error: id,
-			});
-		}
-
-		return res.render("messageView", { messages });
+		return res.render("messageView", { displayname, messages });
 	}
 });
 
