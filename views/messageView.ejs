@@ -5,10 +5,9 @@
 <main>
     <div class="bg-dark text-light rounded shadow p-2 mt-0 ">
         <%
-            var str = messages[0].displayname;
-            var img = str.includes("Student")? "fa-user":"fa-slideshare";
+            var img = displayname.includes("Student")? "fa-user":"fa-slideshare";
         %>    
-        <h2><i class="fa <%= img %>"></i> <%= messages[0].displayname %></h2>
+        <h2><i class="fa <%= img %>"></i> <%= displayname %></h2>
     </div>
     
     <section id="message">
