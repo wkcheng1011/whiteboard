@@ -14,7 +14,8 @@
 <div class="jumbotron mb-0 text-white" style="padding-bottom: 70px; background-color: #35dbba;">
     <h4 class="">
         <img class="mr-1 rounded-circle" src="/images/teacher.png" style="width: 80px; box-shadow:0 0 4px 0 #000">
-        Hi! <%= session.user.name %></h4>
+        <div class="mt-1">Hi! <%= session.user.name %></div>
+    </h4>
     <hr class="my-2">
     <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
     <footer class="blockquote-footer text-right text-light"><cite><%= quote.author %></cite></footer>
