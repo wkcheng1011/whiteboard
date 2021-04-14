@@ -206,7 +206,7 @@ router.post("/new", async (req, res) => {
 			}
 		}
 
-		return res.redirect("/tasks");
+		return res.redirect("/");
 	}
 });
 
