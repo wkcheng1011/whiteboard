@@ -11,7 +11,7 @@ var bg = str.includes("Student")? "bg-stu":"bg-tea";
 <div class="jumbotron mb-0 text-white q-top shadow <%= bg %>" >
     <h4>
         <img class="mr-1 rounded-circle " src="/images/<%= img %>" style="width: 80px;  box-shadow:0 0 4px 4px #000">
-        Hi! <%= session.user.name %>
+        <div class="mt-1">Hi! <%= session.user.name %></div>
     </h4>
     <hr class="my-2 bg-white ">
     <p class="lead blockquote font-weight-bold" style="font-size: 14px;"><%= quote.content %></p>
