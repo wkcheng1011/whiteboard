@@ -12,7 +12,7 @@
                 <% for (const attempt of attempts) { %>
                     <% 
                         const score = (attempt.s * 10000 | 0) / attempt.c / 100;
-                        const cl = score > 50 ? "success" : "danger";
+                        const cl = score >= 50 ? "success" : "danger";
                     %> 
                     <div class="list-group bs-callout bs-callout-<%= cl %> p-0">
                         <div class="list-group-item list-group-item-action">
