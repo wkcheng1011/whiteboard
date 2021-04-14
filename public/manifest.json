@@ -1,0 +1,14 @@
+{
+  "name": "Whiteboard",
+  "theme_color": "#2196f3",
+  "background_color": "#2196f3",
+  "display": "fullscreen",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}
