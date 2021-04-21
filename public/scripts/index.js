@@ -10,7 +10,7 @@ function nameSorter(a, b) {
 const current = new Date();
 const times = document.querySelectorAll(".time");
 for (const time of times) {
-    const diff = Math.abs((current - new Date(time.textContent)) / 1000);
+    const diff = Math.abs((current - new Date(time.textContent.replace(/-/g, "/"))) / 1000);
     let magnitude, unit;
     if (diff > 86400) { // Over a day
         magnitude = diff / 86400;
@@ -39,7 +39,7 @@ for (const deleteBtn of document.querySelectorAll(".deleteBtn")) {
         e.preventDefault();
         const task_id = deleteBtn.dataset.taskId;
         if (confirm("Are you sure to delete this task?")) {
-            window.location = "/task/delete/" + task_id;
+            window.location = "/tasks/delete/" + task_id;
         }
     });
 }
