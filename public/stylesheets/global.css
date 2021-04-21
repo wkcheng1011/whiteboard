@@ -34,3 +34,5 @@ table {
         visibility: visible;
     }
 }
+
+.CodeMirror { z-index: 0 }
