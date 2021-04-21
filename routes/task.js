@@ -210,4 +210,20 @@ router.post("/new", async (req, res) => {
 	}
 });
 
+router.get(/\/delete\/(.{36})/, async (req, res) => {
+	if (!req.session.user) {
+		req.session.redirect = req.originalUrl;
+		return res.redirect("/login");
+	} else if (req.session.user.type != 1) {
+		return res.redirect("/");
+	} else {
+		db = res.locals.db;
+		
+		const task_uuid = req.params[0];
+
+		await db.run("delete from tasks where id = ?", task_uuid);
+
+		return res.redirect("/");
+	}
+})
 module.exports = router;
