@@ -1,5 +1,3 @@
-const debug = true;
-
 const createError = require("http-errors");
 const express = require("express");
 const session = require("express-session");
@@ -35,7 +33,6 @@ app.use(
 
 // Export session data
 app.use((req, res, next) => {
-	res.locals.dbg = debug;
 	res.locals.session = req.session;
 	next();
 });
