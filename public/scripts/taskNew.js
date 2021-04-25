@@ -1,4 +1,6 @@
-const simplemde = new SimpleMDE({});
+const simplemde = new SimpleMDE({
+    autocorrect: false
+});
 
 function randomStr() {
     return Math.random().toString(36).substr(2, 5);
