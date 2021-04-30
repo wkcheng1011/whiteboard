@@ -13,8 +13,11 @@ router.get("/", async (req, res) => {
 	} else {
 		db = res.locals.db;
 		const quote = await (await fetch("https://api.quotable.io/random")).json();
-		const messages = await db.all("select * from messages where (to_id = ? and type = 0) or type = 1", req.session.user.id);
-        
+		const messages = await db.all(
+			"select * from messages where (to_id = ? and type = 0) or type = 1",
+			req.session.user.id
+		);
+
 		res.render("myprofile", { quote, badgeCount: messages.length });
 	}
 });

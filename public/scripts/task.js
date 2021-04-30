@@ -9,15 +9,15 @@ const c = `linear-gradient(${c1}, ${c2})`;
 $(".q-top").css("background-image", c);
 
 const simplemde = new SimpleMDE({
-    status: false,
-    toolbar: false,
-    toolbarTips: false
+	status: false,
+	toolbar: false,
+	toolbarTips: false,
 });
 simplemde.togglePreview();
 
 const resetBtn = document.getElementById("resetBtn");
 resetBtn.addEventListener("click", () => {
-    for (const radio of document.querySelectorAll("input[type=radio]")) {
-        radio.checked = false;
-    }
+	for (const radio of document.querySelectorAll("input[type=radio]")) {
+		radio.checked = false;
+	}
 });

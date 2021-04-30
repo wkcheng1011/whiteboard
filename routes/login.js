@@ -4,12 +4,12 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get("/", (req, res) => {
-    if ("logout" in req.query) {
-        req.session.user = undefined;
+	if ("logout" in req.query) {
+		req.session.user = undefined;
 		req.session.redirect = undefined;
-        res.redirect("/login");
-    } else if (req.session.user) {
-        res.redirect(req.session.redirect || "/");
+		res.redirect("/login");
+	} else if (req.session.user) {
+		res.redirect(req.session.redirect || "/");
 	} else {
 		res.render("login", { failed: false });
 	}
@@ -22,16 +22,17 @@ router.post("/", async (req, res) => {
 
 		const db = res.locals.db;
 		const result = await db.get(
-			"select * from users where username = ? and password = ?", username, md5(password)
+			"select * from users where username = ? and password = ?",
+			username,
+			md5(password)
 		);
 
 		if (result) {
 			req.session.user = result;
 			return res.redirect(req.session.redirect || "/");
 		}
-	} catch (e) {
-	} 
-    return res.render("login", { failed: true });
+	} catch (e) {}
+	return res.render("login", { failed: true });
 });
 
 module.exports = router;

@@ -1,29 +1,21 @@
+            <div style="height: 100px; margin-bottom: 50px;"></div>
 
-
-<div style="height: 100px; margin-bottom: 50px;"></div>
-
-<nav class="navbar navbar-dark navbar-expand-md bg-dark footer d-flex justify-content-between pl-4 pr-4">
-
-    <a href="/">
-        <i class="fa fa-home" style="font-size: 1.9em; color: white;"></i>
-    </a>
-
-
-    <a href="/messages/">
-        <i class="fa fa-comments" style="font-size: 1.9em; color: white;"></i>
-        <% if (typeof badgeCount != "undefined") { %>
-            <span class="badge <%= badgeCount > 0 ? "badge-danger" : "badge-primary" %>">
-                <%= badgeCount %>
-            </span>
-        <% } %>
-    </a>
-
-
-    <a href="/myprofile/">
-        <i class="fa fa-user" style="font-size: 1.9em; color: white;"></i>
-    </a>
-        
-</nav>
-</div>
-</div>
+            <nav class="navbar navbar-dark navbar-expand-md bg-dark footer d-flex justify-content-between pl-4 pr-4">
+                <a href="/">
+                    <i class="fa fa-home" style="font-size: 1.9em; color: white;"></i>
+                </a>
+                <a href="/messages/">
+                    <i class="fa fa-comments" style="font-size: 1.9em; color: white;"></i>
+                    <% if (typeof badgeCount !="undefined" ) { %>
+                        <span class="badge <%= badgeCount > 0 ? " badge-danger" : "badge-primary" %>">
+                            <%= badgeCount %>
+                        </span>
+                        <% } %>
+                </a>
+                <a href="/myprofile/">
+                    <i class="fa fa-user" style="font-size: 1.9em; color: white;"></i>
+                </a>
+            </nav>
+        </div>
+    </div>
 </body>

@@ -1,81 +1,86 @@
 const simplemde = new SimpleMDE({
-    autocorrect: false
+	autocorrect: false,
 });
 
 function randomStr() {
-    return Math.random().toString(36).substr(2, 5);
+	return Math.random().toString(36).substr(2, 5);
 }
 
 function clone(ele) {
-    return document.querySelector(ele).content.firstElementChild.cloneNode(true);
+	return document.querySelector(ele).content.firstElementChild.cloneNode(true);
 }
 
 function addQuestion(first = false) {
-    const id = "q-" + randomStr();
+	const id = "q-" + randomStr();
 
-    const containers = document.querySelector("#questionContainers");
+	const containers = document.querySelector("#questionContainers");
 
-    const questionContainerClone = clone("#questionContainerTemp");
-    questionContainerClone.id = id;
+	const questionContainerClone = clone("#questionContainerTemp");
+	questionContainerClone.id = id;
 
-    const questionInput = questionContainerClone.querySelector("input");
-    questionInput.name = id;
+	const questionInput = questionContainerClone.querySelector("input");
+	questionInput.name = id;
 
-    addAnswer(questionContainerClone, true);
-    const actionClone = clone("#actionTemp");
-    actionClone.querySelector(".removeQBtn").addEventListener("click", () => {
-        containers.querySelector(`#${id}`).remove();
-    });
-    actionClone.querySelector(".addQBtn").addEventListener("click", () => {
-        addQuestion();
-    });
+	addAnswer(questionContainerClone, true);
+	const actionClone = clone("#actionTemp");
+	actionClone.querySelector(".removeQBtn").addEventListener("click", () => {
+		containers.querySelector(`#${id}`).remove();
+	});
+	actionClone.querySelector(".addQBtn").addEventListener("click", () => {
+		addQuestion();
+	});
 
-    if (first) {
-        actionClone.querySelector(".removeQBtn").remove();
-    }
+	if (first) {
+		actionClone.querySelector(".removeQBtn").remove();
+	}
 
-    questionContainerClone.appendChild(actionClone);
-    containers.appendChild(questionContainerClone);
-    if (!first) {
-        containers.querySelector(`#${id} input`).focus();
-    }
+	questionContainerClone.appendChild(actionClone);
+	containers.appendChild(questionContainerClone);
+	if (!first) {
+		containers.querySelector(`#${id} input`).focus();
+	}
 }
 
 function addAnswer(questionElement, first = false) {
-    const id = randomStr();
+	const id = randomStr();
 
-    const answerClone = clone("#answerTemp");
-    answerClone.id = id;
+	const answerClone = clone("#answerTemp");
+	answerClone.id = id;
 
-    const radio = answerClone.querySelector("input[type=radio]");
-    radio.name = questionElement.id + "-r";
-    radio.value = id;
+	const radio = answerClone.querySelector("input[type=radio]");
+	radio.name = questionElement.id + "-r";
+	radio.value = id;
 
-    const content = answerClone.querySelector("input[type=text]");
-    content.name = questionElement.id + "-c-" + id;
+	const content = answerClone.querySelector("input[type=text]");
+	content.name = questionElement.id + "-c-" + id;
 
-    answerClone.querySelector(".removeABtn").addEventListener("click", () => {
-        questionElement.querySelector(`#${id}`).remove();
-    });
+	answerClone.querySelector(".removeABtn").addEventListener("click", () => {
+		questionElement.querySelector(`#${id}`).remove();
+	});
 
-    answerClone.querySelector(".addABtn").addEventListener("click", () => {
-        addAnswer(questionElement);
-    });
+	answerClone.querySelector(".addABtn").addEventListener("click", () => {
+		addAnswer(questionElement);
+	});
 
-    if (first) {
-        radio.checked = true;
-        answerClone.querySelector(".removeABtn").remove();
-    }
+	if (first) {
+		radio.checked = true;
+		answerClone.querySelector(".removeABtn").remove();
+	}
 
-    questionElement.insertBefore(answerClone, questionElement.querySelector(".d-flex"));
-    questionElement.querySelector(`input[name=${questionElement.id + "-c-" + id}]`).focus();
+	questionElement.insertBefore(
+		answerClone,
+		questionElement.querySelector(".d-flex")
+	);
+	questionElement
+		.querySelector(`input[name=${questionElement.id + "-c-" + id}]`)
+		.focus();
 }
 
 const startDatePicker = document.querySelector("#start");
 const endDatePicker = document.querySelector("#end");
 
 startDatePicker.addEventListener("change", () => {
-    endDatePicker.min = startDatePicker.value;
+	endDatePicker.min = startDatePicker.value;
 });
 
 addQuestion(true);

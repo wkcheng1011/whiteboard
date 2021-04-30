@@ -1,11 +1,12 @@
 <%- include('_header'); %>
 <script src="/scripts/index.js" defer></script>
 <link rel="stylesheet" href="/stylesheets/index.css">
+<script>document.querySelector("#bk-btn").href = "/";</script>
 
 <%
-var str = session.user.name;
-var img = str.includes("Student")? "students.png":"teacher.png";
-var bg = str.includes("Student")? "bg-stu":"bg-tea";
+    var str = session.user.name;
+    var img = session.user.type == 0 ? "students.png" : "teacher.png";
+    var bg = session.user.type == 0 ?  "bg-stu" : "bg-tea";
 %>         
 
 <div class="jumbotron mb-0 text-white q-top shadow <%= bg %>" >
